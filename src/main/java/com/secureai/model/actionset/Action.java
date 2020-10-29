@@ -13,7 +13,7 @@ public class Action {
     @JsonProperty("execution-cost")
     private Double executionCost;
 
-    private Boolean disruptive;
+    //private Boolean disruptive;
 
     @JsonProperty("pre-condition")
     @JsonDeserialize(using = PreConditionDeserializer.class)
@@ -24,7 +24,7 @@ public class Action {
     private PostNodeStateFunction postCondition;
 
     public interface PreNodeStateFunction {
-        boolean run(SystemState state, String resourceId);
+        Boolean run(SystemState state, String resourceId);
     }
 
     public interface PostNodeStateFunction {

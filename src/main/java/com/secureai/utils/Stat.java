@@ -36,6 +36,15 @@ public class Stat<T> {
             this.fileWriter = new FileWriter(f);
             this.bufferedWriter = new BufferedWriter(this.fileWriter);
 
+
+            if (this.bufferedWriter != null) {
+                try {
+                    this.bufferedWriter.write("Timestamp , Reward\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

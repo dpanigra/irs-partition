@@ -1,7 +1,6 @@
 package com.secureai;
 
 import com.secureai.model.actionset.ActionSet;
-import com.secureai.model.stateset.State;
 import com.secureai.model.topology.Topology;
 import com.secureai.system.SystemEnvironment;
 import com.secureai.system.SystemState;

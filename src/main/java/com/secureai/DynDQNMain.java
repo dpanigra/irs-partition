@@ -110,8 +110,9 @@ public class DynDQNMain {
 
     public static void setup() {
         if (switches++ > 2) System.exit(0);
-        String topologyId = switches == 1 ? "1" : "1"; // RandomUtils.getRandom(new String[]{"paper-4", "paper-7"});
-        String actionSetId = switches == 1 ? "paper-7-stress" : "paper-6-stress"; // RandomUtils.getRandom(new String[]{"paper-5", "paper-6"});
+        //String topologyId = switches == 1 ? "1" : "1"; // RandomUtils.getRandom(new String[]{"paper-4", "paper-7"});
+        String topologyId = "1-vms";
+        String actionSetId = "1-vms";
         argsMap.put("epsilonNbStep", switches == 1 ? "0" : "0");
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
 
@@ -120,9 +121,9 @@ public class DynDQNMain {
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "123")),                //Random seed
-                Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "1000")),       //Max step By epoch
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "20000")),           //Max step
-                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
+                Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "100")),       //Max step By epoch
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "2000")),           //Max step
+                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup

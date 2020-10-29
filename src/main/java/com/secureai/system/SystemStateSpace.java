@@ -1,13 +1,12 @@
 package com.secureai.system;
 
-import com.secureai.model.stateset.State;
 import com.secureai.rl.abs.ArrayObservationSpace;
+import com.secureai.model.stateset.State;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class SystemStateSpace extends ArrayObservationSpace<SystemState> {
 
@@ -17,14 +16,17 @@ public class SystemStateSpace extends ArrayObservationSpace<SystemState> {
     @Getter
     private List<String> map;
 
-    public SystemStateSpace(SystemEnvironment environment) {
-        super(new int[]{environment.getSystemDefinition().getResources().size() * State.values().length});
+    public SystemStateSpace(SystemEnvironment environment, int size) {
+        super(new int[]{size});
         this.environment = environment;
-        this.map = this.environment.getSystemDefinition().getResources().stream().flatMap(resourceId -> Stream.of(State.values()).map(stateId -> String.format("%s.%s", resourceId, stateId))).collect(Collectors.toList());
+        this.map = this.environment.getSystemDefinition().getTopology().getTasks().entrySet().stream().flatMap(
+                entry -> entry.getValue().getState().stream().flatMap(
+                        state -> IntStream.range(0, entry.getValue().getReplication()).mapToObj(
+                                i ->  String.format("%s.%d.%s", entry.getKey(), i, state)))).collect(Collectors.toList());
     }
 
     public SystemState encode(Double[] input) {
-        SystemState systemState = new SystemState(this.environment);
+        SystemState systemState = new SystemState(this.environment, this.environment.getSystemDefinition().getSystemStateSize());
         IntStream.range(0, input.length).forEach(i -> {
             String systemStateId = this.map.get(i);
             Double systemStateValue = input[i];

@@ -39,11 +39,10 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
 
     public SystemEnvironment(Topology topology, ActionSet actionSet) {
         this.actionSet = actionSet;
-
         this.systemDefinition = new SystemDefinition(topology);
         this.actionSpace = new SystemActionSpace(this);
-        this.observationSpace = new SystemStateSpace(this);
-        this.systemState = new SystemState(this);
+        this.observationSpace = new SystemStateSpace(this, this.getSystemDefinition().getSystemStateSize());
+        this.systemState = new SystemState(this, this.getSystemDefinition().getSystemStateSize());
         this.systemRewardFunction = new SystemRewardFunction(this);
         this.systemTerminateFunction = new SystemTerminateFunction(this);
         this.actionCounter = new MapCounter<>();
@@ -59,6 +58,8 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
     }
 
     public SystemState reset() {
+        //this.stat.append(this.cumulativeReward);
+        //System.out.println(String.format("[Episode %d][Steps: %d][Cumulative Reward: %f][Action bins %s]", this.episodes, this.step, this.cumulativeReward, this.actionCounter));
         this.systemState.reset();
         this.step = 0;
         this.episodes++;

@@ -22,14 +22,14 @@ public class QNMain {
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
 
-        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "paper-4")), Topology.class);
-        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "paper-7")), ActionSet.class);
+        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "1-vms")), Topology.class);
+        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "1-vms")), ActionSet.class);
 
         SystemEnvironment mdp = new SystemEnvironment(topology, actionSet);
 
         QLearning.QNConfiguration qnConfiguration = new QLearning.QNConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "123")),              //Random seed
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "150000")),        //episodes
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "15000")),        //episodes
                 Integer.parseInt(argsMap.getOrDefault("maxEpisodeStep", "400")),    //max step
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.9")),    //alpha
                 Double.parseDouble(argsMap.getOrDefault("discountFactor", "0.75")), //gamma

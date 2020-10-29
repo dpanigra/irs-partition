@@ -3,9 +3,9 @@ package com.secureai.model.actionset;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.secureai.model.stateset.State;
 import com.secureai.utils.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import com.secureai.model.stateset.State;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,11 +32,12 @@ public class PostConditionDeserializer extends StdDeserializer<Action.PostNodeSt
             };
 
         List<Action.PostNodeStateFunction> andConditions = new ArrayList<>();
+        double rnd = RandomUtils.random.nextDouble();
         if (!str.contains(", "))
-            andConditions.add(this.parsePostCondition(str));
+            andConditions.add(this.parsePostCondition(str, rnd));
         else {
             for (String andConditionString : str.split(", ")) {
-                andConditions.add(this.parsePostCondition(andConditionString));
+                andConditions.add(this.parsePostCondition(andConditionString, rnd));
             }
         }
 
@@ -46,11 +47,11 @@ public class PostConditionDeserializer extends StdDeserializer<Action.PostNodeSt
         }).orElse(null);
     }
 
-    private Action.PostNodeStateFunction parsePostCondition(String str) {
+    private Action.PostNodeStateFunction parsePostCondition(String str, double rnd) {
         String[] components = str.split(" = ");
         State nodeState = State.valueOf(StringUtils.substringBetween(components[0], "[", "]"));
         double threshold = Double.parseDouble(StringUtils.substringBetween(components[1], "rand(", ")"));
 
-        return (state, i) -> state.set(i, nodeState, RandomUtils.random.nextDouble() < threshold);
+        return (state, i) -> state.set(i, nodeState, rnd < threshold);
     }
 }

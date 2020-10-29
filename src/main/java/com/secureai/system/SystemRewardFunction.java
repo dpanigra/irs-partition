@@ -23,6 +23,7 @@ public class SystemRewardFunction implements RewardFunction<SystemState, SystemA
 
     @Override
     public double reward(SystemState oldState, SystemAction systemAction, SystemState currentState) {
+
         if (oldState.equals(currentState))
             return -2; // This is the reward if the policy choose an action that cannot be run or keeps the system in the same state
         Action action = this.environment.getActionSet().getActions().get(systemAction.getActionId());

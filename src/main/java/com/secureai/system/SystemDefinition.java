@@ -17,7 +17,6 @@ public class SystemDefinition {
 
     public SystemDefinition(Topology topology) {
         this.topology = topology;
-
         this.resources = this.topology.getTasks().entrySet().stream().flatMap(entry -> IntStream.range(0, entry.getValue().getReplication()).mapToObj(i -> String.format("%s.%d", entry.getKey(), i))).collect(Collectors.toList());
     }
 
@@ -49,5 +48,14 @@ public class SystemDefinition {
             j++;
         }
         System.out.print("\n");
+    }
+
+
+    public int getSystemStateSize() {
+        int size = 0;
+        for ( Task t : this.getTopology().getTasks().values()) {
+            size += t.getState().size() * t.getReplication();
+        }
+        return size;
     }
 }
