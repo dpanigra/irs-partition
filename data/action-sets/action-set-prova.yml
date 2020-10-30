@@ -1,0 +1,60 @@
+id: action-set-2-containers
+
+actions:
+
+  start:
+    execution-time: 300
+    execution-cost: 100
+    pre-condition: state[active] == false
+    post-condition: state[active] = rand(1)
+  
+  restart:
+    execution-time: 500
+    execution-cost: 300
+    pre-condition: state[active] == true && state[corrupted] == true && state[restarted] == false
+    post-condition: state[corrupted] = rand(0.75), state[restarted] = rand(1)
+    
+  heal:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[corrupted] == true
+    post-condition: state[corrupted] = rand(0)
+    
+  healRedisSecure:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[cartCorrupted] == true && state[integrityVulnerability] == false
+    post-condition: state[cartCorrupted] = rand(0)
+    
+  healRedisUnsecure:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[cartCorrupted] == true && state[integrityVulnerability] == true
+    post-condition: state[cartCorrupted] = rand(0.9)
+
+  healShell:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[shellCorrupted] == true
+    post-condition: state[shellCorrupted] = rand(0), state[corrupted] = rand(0)
+    
+  enablePassword:
+    execution-time: 1000
+    execution-cost: 1000
+    pre-condition: state[active] == true && state[passwordRequired] == false && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true 
+    post-condition: state[passwordRequired] = rand(1), state[confidentialityVulnerability] = rand(0), state[integrityVulnerability] = rand(0)
+    
+    
+  disableDangerousCmd:
+    execution-time: 50
+    execution-cost: 500
+    pre-condition: state[active] == true && state[dangerousCmdEnabled] == true && state[integrityVulnerability] == true
+    post-condition: state[dangerousCmdEnabled] = rand(0), state[integrityVulnerability] = rand(0.8)
+    
+  restrictAccess:
+    execution-time: 50
+    execution-cost: 300
+    pre-condition: state[active] == true && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
+    post-condition: state[confidentialityVulnerability] = rand(0.7) , state[integrityVulnerability] = rand(0.7)
+ 
+    

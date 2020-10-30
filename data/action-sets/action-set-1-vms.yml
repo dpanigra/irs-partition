@@ -1,0 +1,58 @@
+id: action-set-1-vms
+
+actions:
+
+  start:
+    execution-time: 300
+    execution-cost: 100
+    pre-condition: state[active] == false
+    post-condition: state[active] = rand(1)
+  
+  restart:
+    execution-time: 500
+    execution-cost: 300
+    pre-condition: state[active] == true && state[corrupted] == true && state[restarted] == false
+    post-condition: state[corrupted] = rand(0.75), state[restarted] = rand(1)
+    
+  healSecure:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[corrupted] == true && state[dockerRuncUpdated] == true OR state[dockerExecAvailable] == false
+    post-condition: state[corrupted] = rand(0)
+    
+  healUnsecure:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[corrupted] == true && state[dockerRuncUpdated] == false && state[dockerExecAvailable] == true
+    post-condition: state[corrupted] = rand(1)
+    
+  updateDockerRunc:
+    execution-time: 800
+    execution-cost: 750
+    pre-condition: state[active] == true && state[dockerRuncUpgradable] == true && state[dockerRuncUpdated] == false
+    post-condition: state[dockerRuncUpgradable] = rand(0), state[dockerRuncUpdated] = rand(1)
+    
+  preventDockerExec:
+    execution-time: 50
+    execution-cost: 1000
+    pre-condition: state[active] == true && state[dockerExecAvailable] == true && state[containerCorrupted] == true
+    post-condition: state[dockerExecAvailable] = rand(0)
+    
+  blockICMP:
+    execution-time: 50
+    execution-cost: 700
+    pre-condition: state[active] == true && state[firewallBlockICMP] == false && state[appAvailable] == false
+    post-condition: state[firewallBlockICMP] = rand(1), state[appAvailable] = rand(1)
+
+  addHeavyBandwidthLimit:
+    execution-time: 100
+    execution-cost: 500
+    pre-condition: state[active] == true && state[firewallHeavyBandwidthLimit] == false && state[appAvailable] == false
+    post-condition: state[firewallHeavyBandwidthLimit] = rand(1), state[appAvailable] = rand(0.8)
+    
+  addSoftBandwidthLimit:
+    execution-time: 100
+    execution-cost: 300
+    pre-condition: state[active] == true && state[firewallSoftBandwidthLimit] == false && state[appAvailable] == false
+    post-condition: state[firewallSoftBandwidthLimit] = rand(1), state[appAvailable] = rand(0.6)
+    

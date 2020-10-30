@@ -1,0 +1,48 @@
+id: topology-1-vms
+
+tasks:
+  # Classic Api Gateway
+  api-gateway:
+    type: api-gateway
+    replication: 1
+    state:
+      - active
+      - firewallBlockICMP
+      - firewallSoftBandwidthLimit
+      - firewallHeavyBandwidthLimit
+      - appAvailable
+
+  # Services
+  master:
+    type: image
+    replication: 1
+    state:
+      - active
+  worker:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - dockerRuncUpdated
+      - dockerRuncUpgradable
+      - dockerExecAvailable
+      - containerCorrupted
+
+connections:
+  # First tier
+  api-gateway-main-to-master:
+    type: any
+    direction: bidirectional
+    from: api-gateway-main
+    to: master
+
+  # Second tier
+  master-to-worker:
+    type: any
+    direction: bidirectional
+    from: master
+    to: worker
+    
+    
