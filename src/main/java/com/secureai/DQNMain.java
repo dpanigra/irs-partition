@@ -29,6 +29,9 @@ public class DQNMain {
     public static boolean training = true;
 
     public static void main(String... args) throws IOException {
+
+
+
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
         System.setProperty("org.bytedeco.javacpp.maxbytes", "0");
         BasicConfigurator.configure();
@@ -36,13 +39,13 @@ public class DQNMain {
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
 
-        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "1-vms")), Topology.class);
-        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "1-vms")), ActionSet.class);
+        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "prova")), Topology.class);
+        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "2-containers")), ActionSet.class);
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
-                Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "1000")),       //Max step By epoch
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "15000")),          //Max step
+                Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "1000")),      //Max step By epoch
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "150000")),          //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
@@ -50,8 +53,8 @@ public class DQNMain {
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
-                Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "15000")),     //num step for eps greedy anneal
+                Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "150000")),     //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
@@ -69,8 +72,11 @@ public class DQNMain {
         DataManager dataManager = new DataManager(true);
         dql.addListener(new DataManagerTrainingListener(dataManager));
         dql.addListener(new RLStatTrainingListener(dataManager.getInfo().substring(0, dataManager.getInfo().lastIndexOf('/'))));
+        long startTime = System.nanoTime();
         dql.train();
-
+        long endTime = System.nanoTime();
+        long trainingTime =(endTime-startTime)/1000000000;
+        System.out.println("Total training time (seconds):"+trainingTime);
         training = false;
 
         System.out.println("[Play] Starting experiment");
