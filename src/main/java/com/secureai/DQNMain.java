@@ -45,7 +45,7 @@ public class DQNMain {
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "1000")),      //Max step By epoch
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "150000")),          //Max step
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "15000")),          //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
@@ -54,7 +54,7 @@ public class DQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "150000")),     //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "15000")),     //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
@@ -76,7 +76,7 @@ public class DQNMain {
         dql.train();
         long endTime = System.nanoTime();
         long trainingTime =(endTime-startTime)/1000000000;
-        System.out.println("Total training time (seconds):"+trainingTime);
+        Logger.getAnonymousLogger().info("[Time] Total training time (seconds):"+trainingTime);
         training = false;
 
         System.out.println("[Play] Starting experiment");
