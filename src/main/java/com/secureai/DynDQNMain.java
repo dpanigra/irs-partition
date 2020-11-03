@@ -50,7 +50,7 @@ public class DynDQNMain {
         //runWithThreshold();
         runWithTimer();
 
-        for (; iteration<2 ; iteration++ ) {
+        for (; iteration<3 ; iteration++ ) {
             System.out.println("---------------------");
             System.out.println("Iteration "+iteration);
             System.out.println("---------------------");
@@ -172,6 +172,8 @@ public class DynDQNMain {
             e.printStackTrace();
         }
 
+        if(iteration==0)
+            return;
 
         System.out.println("[Play] Starting experiment [iteration: "+ iteration +"] ");
         int EPISODES = 10;
