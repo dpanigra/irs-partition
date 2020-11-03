@@ -45,8 +45,8 @@ public class DynDQNMain {
 
         argsMap = ArgsUtils.toMap(args);
 
-        runWithThreshold();
-        //runWithTimer();
+        //runWithThreshold();
+        runWithTimer();
 
         for (int i=0; i<10 ; i++ ) {
             System.out.println("---------------------");
@@ -83,7 +83,7 @@ public class DynDQNMain {
     }
 
     public static void runWithTimer() {
-        int TIMER_THRESHOLD = 15000; // After 0s and period 15s
+        int TIMER_THRESHOLD = 60000; // After 0s and period 15s
 
         new Timer(true).schedule(new TimerTask() {
             @SneakyThrows
@@ -137,7 +137,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "15000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "8000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
