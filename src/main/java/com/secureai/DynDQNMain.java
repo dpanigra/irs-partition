@@ -85,7 +85,7 @@ public class DynDQNMain {
     }
 
     public static void runWithTimer() {
-        int TIMER_THRESHOLD = 60000; // After 0s and period 15s
+        int TIMER_THRESHOLD = 120000; // After 0s and period 15s
 
         new Timer(true).schedule(new TimerTask() {
             @SneakyThrows
