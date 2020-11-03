@@ -18,20 +18,19 @@ public class SystemAction {
         if(!DQNMain.training)
             print = true;
         Action action = environment.getActionSet().getActions().get(this.actionId);
-        /*if(print){
-            if(actionId.equals("healSecure")){
-                System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId);
-                 printResourceState(environment);
-            }
-            System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId);
-        }*/
-        if (action.getPreCondition().run(environment.getSystemState(), this.resourceId)){
+        /*if(print)
+            System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId);*/
+        if (checkPreconditions(environment)){
             if(print)
                 System.out.println("RUN Action: "+this.actionId+" : "+this.resourceId);
             action.getPostCondition().run(environment.getSystemState(), this.resourceId);
             //printResourceState(environment);
-
         }
+    }
+
+    public boolean checkPreconditions(SystemEnvironment environment) {
+        Action action = environment.getActionSet().getActions().get(this.actionId);
+        return action.getPreCondition().run(environment.getSystemState(), this.resourceId) == true ? true : false; // do not return null
     }
 
     private void printResourceState(SystemEnvironment environment){
