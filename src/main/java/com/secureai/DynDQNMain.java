@@ -172,9 +172,10 @@ public class DynDQNMain {
             e.printStackTrace();
         }
 
-        if(iteration==0)
+        if(iteration==0) {
+            iteration++;
             return;
-
+        }
         System.out.println("[Play] Starting experiment [iteration: "+ iteration +"] ");
         int EPISODES = 10;
         double rewards = 0;
