@@ -85,7 +85,7 @@ public class DynDQNMain {
     }
 
     public static void runWithTimer() {
-        int TIMER_THRESHOLD = 120000; // After 0s and period 15s
+        int TIMER_THRESHOLD = 180000; // After 0s and period 15s
 
         new Timer(true).schedule(new TimerTask() {
             @SneakyThrows
@@ -131,16 +131,16 @@ public class DynDQNMain {
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "123")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "15000")),           //Max step
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "30000")),           //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
-                Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
+                Integer.parseInt(argsMap.getOrDefault("batchSize", "512")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "15000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "30000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
