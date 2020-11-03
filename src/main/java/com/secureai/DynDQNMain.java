@@ -27,6 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Logger;
 
 public class DynDQNMain {
 
@@ -36,6 +37,7 @@ public class DynDQNMain {
     static SystemEnvironment mdp = null;
     static Map<String, String> argsMap;
     static int switches = 0;
+    public static Integer iteration = 0;
 
     public static void main(String... args) throws InterruptedException {
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
@@ -48,9 +50,9 @@ public class DynDQNMain {
         //runWithThreshold();
         runWithTimer();
 
-        for (int i=0; i<10 ; i++ ) {
+        for (; iteration<2 ; iteration++ ) {
             System.out.println("---------------------");
-            System.out.println("Iteration "+i);
+            System.out.println("Iteration "+iteration);
             System.out.println("---------------------");
             queue.take().run();
         }
@@ -117,7 +119,8 @@ public class DynDQNMain {
     public static void setup() {
        // if (switches++ > 2) System.exit(0);
         //String topologyId = switches == 1 ? "1" : "1"; // RandomUtils.getRandom(new String[]{"paper-4", "paper-7"});
-        String topologyId = RandomUtils.getRandom(new String[]{"1-vms", "prova"});
+       // String topologyId = RandomUtils.getRandom(new String[]{"1-vms", "prova"});
+        String topologyId = iteration == 0 ? "1-vms" : "prova";
         String actionSetId = "1-vms";
         argsMap.put("epsilonNbStep", switches == 1 ? "0" : "0");
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
@@ -137,7 +140,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "8000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "15000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
@@ -168,5 +171,19 @@ public class DynDQNMain {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        System.out.println("[Play] Starting experiment [iteration: "+ iteration +"] ");
+        int EPISODES = 10;
+        double rewards = 0;
+        for (int i = 0; i < EPISODES; i++) {
+            System.out.println("mdp reset");
+            mdp.reset();
+            System.out.println("play policy");
+            double reward = dql.getPolicy().play(mdp);
+            rewards += reward;
+            Logger.getAnonymousLogger().info("[Evaluate] Reward: " + reward);
+        }
+        Logger.getAnonymousLogger().info("[Evaluate] Average reward: " + rewards / EPISODES);
     }
 }
