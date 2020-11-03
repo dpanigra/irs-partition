@@ -48,13 +48,14 @@ public class DynDQNMain {
         argsMap = ArgsUtils.toMap(args);
 
         //runWithThreshold();
-        runWithTimer();
+        //runWithTimer();
 
         for (; iteration<3 ; iteration++ ) {
             System.out.println("---------------------");
             System.out.println("Iteration "+iteration);
             System.out.println("---------------------");
-            queue.take().run();
+            //queue.take().run();
+            setup();
         }
     }
 
@@ -172,10 +173,6 @@ public class DynDQNMain {
             e.printStackTrace();
         }
 
-        if(iteration==0) {
-            iteration++;
-            return;
-        }
         System.out.println("[Play] Starting experiment [iteration: "+ iteration +"] ");
         int EPISODES = 10;
         double rewards = 0;
