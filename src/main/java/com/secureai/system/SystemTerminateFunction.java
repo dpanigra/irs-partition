@@ -46,10 +46,10 @@ public class SystemTerminateFunction implements TerminateFunction<SystemState> {
             if (    (active != null && !active ) ||
                     ( corrupted != null && corrupted) ||
                     ( shellCorrupted != null && shellCorrupted) ||
-                    ( cartCorrupted != null && cartCorrupted) ||
-                    ( confidentialityVuln != null && confidentialityVuln) ||
-                    ( integrityVuln != null && integrityVuln) )
-                return false;
+                    ( cartCorrupted != null && cartCorrupted) ) {// ||
+                    //( confidentialityVuln != null && confidentialityVuln) ||
+                    //( integrityVuln != null && integrityVuln) )
+                return false;}
         }
         return true;
 
