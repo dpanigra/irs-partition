@@ -53,7 +53,7 @@ public class DynDQNMain {
         //runWithThreshold();
         //runWithTimer();
 
-        for (; iteration<2 ; iteration++ ) {
+        for (; iteration<1 ; iteration++ ) {
             System.out.println("---------------------");
             System.out.println("Iteration "+iteration);
             System.out.println("---------------------");
@@ -125,8 +125,8 @@ public class DynDQNMain {
         //String topologyId = switches == 1 ? "1" : "1"; // RandomUtils.getRandom(new String[]{"paper-4", "paper-7"});
        // String topologyId = RandomUtils.getRandom(new String[]{"1-vms", "prova"});
       //  String topologyId = iteration == 0 ? "1-vms" : "prova";
-        String topologyId = "1-vms";
-        String actionSetId = "1-vms";
+        String topologyId = "prova";
+        String actionSetId = "2-containers";
         argsMap.put("epsilonNbStep", switches == 1 ? "0" : "0");
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
 
@@ -135,7 +135,7 @@ public class DynDQNMain {
 
 
         // increase workers
-        topology.getTasks().get("worker").setReplication(topology.getTasks().get("worker").getReplication() + iteration);
+        // topology.getTasks().get("worker").setReplication(topology.getTasks().get("worker").getReplication() + iteration);
 
 
         QLearning.QLConfiguration qlConfiguration;
@@ -157,6 +157,7 @@ public class DynDQNMain {
         );
 
         System.out.println("--- batch size: "+qlConfiguration.getBatchSize());
+
         /*
         if(actionSetId.equals("1-vms")) {
              qlConfiguration = new QLearning.QLConfiguration(

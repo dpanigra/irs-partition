@@ -1,48 +1,129 @@
-id: topology-1-vms
+id: topology-2-containers
 
 tasks:
   # Classic Api Gateway
-  api-gateway:
+  api-gateway-main:
     type: api-gateway
     replication: 1
     state:
       - active
-      - firewallBlockICMP
-      - firewallSoftBandwidthLimit
-      - firewallHeavyBandwidthLimit
-      - appAvailable
 
   # Services
-  master:
-    type: image
-    replication: 1
-    state:
-      - active
-  worker:
+  frontend-service:
     type: image
     replication: 3
     state:
       - active
       - restarted
       - corrupted
-      - dockerRuncUpdated
-      - dockerRuncUpgradable
-      - dockerExecAvailable
-      - containerCorrupted
+      - shellCorrupted
+
+
+  # Databases
+  redis-cache:
+    type: database
+    replication: 1
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+      - cartCorrupted
+      - confidentialityVulnerability
+      - integrityVulnerability
+      - passwordRequired
+      - dangerousCmdEnabled
+      - accessRestricted
 
 connections:
   # First tier
-  api-gateway-main-to-master:
-    type: any
+  api-gateway-main-to-frontend-service:
+    type: http
     direction: bidirectional
     from: api-gateway-main
-    to: master
+    to: frontend
 
   # Second tier
-  master-to-worker:
-    type: any
+  frontend-service-to-ad-service:
+    type: proprietary
     direction: bidirectional
-    from: master
-    to: worker
+    from: frontend-service
+    to: ad-service
+  frontend-service-to-checkout-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: checkout-service
+  frontend-service-to-currency-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: currency-service
+  frontend-service-to-shipping-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: shipping-service
+  frontend-service-to-product-catalog-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: product-catalog-service
+  frontend-service-to-cart-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: cart-service
+  frontend-service-to-recomendation-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: recomendation-service
+
+  # Third tier
+
+  checkout-service-to-email-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: email-service
+  checkout-service-to-payment-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: payment-service
+  checkout-service-to-shipping-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: shipping-service
+  checkout-service-to-currency-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: currency-service
+  checkout-service-to-product-catalog-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: product-catalog-service
+  checkout-service-to-cart-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: cart-service
+  recomendation-service-to-product-catalog-service:
+    type: proprietary
+    direction: bidirectional
+    from: recomendation-service
+    to: product-catalog-service
+  cart-service-to-redis-cache:
+    type: proprietary
+    direction: bidirectional
+    from: cart-service
+    to: redis-cache
+
+
+
 
 
