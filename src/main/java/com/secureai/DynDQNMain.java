@@ -2,6 +2,7 @@ package com.secureai;
 
 import com.secureai.model.actionset.ActionSet;
 import com.secureai.model.topology.Topology;
+import com.secureai.model.topology.Task;
 import com.secureai.nn.DynNNBuilder;
 import com.secureai.nn.NNBuilder;
 import com.secureai.rl.abs.ParallelDQN;
@@ -123,7 +124,8 @@ public class DynDQNMain {
        // if (switches++ > 2) System.exit(0);
         //String topologyId = switches == 1 ? "1" : "1"; // RandomUtils.getRandom(new String[]{"paper-4", "paper-7"});
        // String topologyId = RandomUtils.getRandom(new String[]{"1-vms", "prova"});
-        String topologyId = iteration == 0 ? "1-vms" : "prova";
+      //  String topologyId = iteration == 0 ? "1-vms" : "prova";
+        String topologyId = "1-vms";
         String actionSetId = "1-vms";
         argsMap.put("epsilonNbStep", switches == 1 ? "0" : "0");
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
@@ -132,7 +134,30 @@ public class DynDQNMain {
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
 
+        // increase workers
+        topology.getTasks().get("worker").setReplication(topology.getTasks().get("worker").getReplication() + iteration);
+
+
         QLearning.QLConfiguration qlConfiguration;
+
+        qlConfiguration = new QLearning.QLConfiguration(
+                Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
+                Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "10000")),           //Max step
+                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
+                Integer.parseInt(argsMap.getOrDefault("batchSize", "256")),           //size of batches
+                Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
+                Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
+                Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
+                Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
+                Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
+                Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "10000")),      //num step for eps greedy anneal
+                Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
+        );
+
+        System.out.println("--- batch size: "+qlConfiguration.getBatchSize());
+        /*
         if(actionSetId.equals("1-vms")) {
              qlConfiguration = new QLearning.QLConfiguration(
                     Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
@@ -166,7 +191,7 @@ public class DynDQNMain {
                     Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "1000")),      //num step for eps greedy anneal
                     Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
             );
-        }
+        }*/
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         if (nn == null)
             nn = new NNBuilder().build(newMdp.getObservationSpace().size(), newMdp.getActionSpace().getSize(), Integer.parseInt(argsMap.getOrDefault("layers", "3")));
