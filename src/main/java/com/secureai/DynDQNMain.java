@@ -126,7 +126,7 @@ public class DynDQNMain {
        // String topologyId = RandomUtils.getRandom(new String[]{"1-vms", "prova"});
       //  String topologyId = iteration == 0 ? "1-vms" : "prova";
         String topologyId = "prova";
-        String actionSetId = "2-containers";
+        String actionSetId = "prova";
         argsMap.put("epsilonNbStep", switches == 1 ? "0" : "0");
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
 
