@@ -1,6 +1,7 @@
 package com.secureai.system;
 
 import com.secureai.DQNMain;
+import com.secureai.DynDQNMain;
 import com.secureai.model.actionset.Action;
 import com.secureai.model.stateset.State;
 import lombok.AllArgsConstructor;
@@ -15,12 +16,12 @@ public class SystemAction {
 
     public void run(SystemEnvironment environment) {
         boolean print = false;
-        if(!DQNMain.training)
+        if(!DynDQNMain.training)
             print = true;
         Action action = environment.getActionSet().getActions().get(this.actionId);
-        /*if(print)
-            System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId);*/
-        if (checkPreconditions(environment)){
+        if(print)
+            System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId);
+        if (action.getPreCondition().run(environment.getSystemState(), this.resourceId)){
             if(print)
                 System.out.println("RUN Action: "+this.actionId+" : "+this.resourceId);
             action.getPostCondition().run(environment.getSystemState(), this.resourceId);

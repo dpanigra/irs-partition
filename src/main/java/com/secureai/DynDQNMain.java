@@ -39,6 +39,8 @@ public class DynDQNMain {
     static int switches = 0;
     public static Integer iteration = 0;
 
+    public static boolean training = true;
+
     public static void main(String... args) throws InterruptedException {
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
         System.setProperty("org.bytedeco.javacpp.maxbytes", "0");
@@ -129,22 +131,42 @@ public class DynDQNMain {
         Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", topologyId), Topology.class);
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
-        QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
-                Integer.parseInt(argsMap.getOrDefault("seed", "123")),                //Random seed
-                Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "30000")),           //Max step
-                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
-                Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
-                Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
-                Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
-                Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
-                Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
-                Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
-                Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "30000")),      //num step for eps greedy anneal
-                Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
-        );
 
+        QLearning.QLConfiguration qlConfiguration;
+        if(actionSetId.equals("1-vms")) {
+             qlConfiguration = new QLearning.QLConfiguration(
+                    Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
+                    Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
+                    Integer.parseInt(argsMap.getOrDefault("maxStep", "5000")),           //Max step
+                    Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
+                    Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
+                    Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
+                    Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
+                    Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
+                    Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
+                    Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
+                    Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
+                    Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "5000")),      //num step for eps greedy anneal
+                    Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
+            );
+        }
+        else{
+            qlConfiguration = new QLearning.QLConfiguration(
+                    Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
+                    Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
+                    Integer.parseInt(argsMap.getOrDefault("maxStep", "5000")),           //Max step
+                    Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
+                    Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
+                    Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
+                    Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
+                    Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
+                    Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
+                    Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
+                    Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
+                    Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "1000")),      //num step for eps greedy anneal
+                    Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
+            );
+        }
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         if (nn == null)
             nn = new NNBuilder().build(newMdp.getObservationSpace().size(), newMdp.getActionSpace().getSize(), Integer.parseInt(argsMap.getOrDefault("layers", "3")));
@@ -173,6 +195,16 @@ public class DynDQNMain {
             e.printStackTrace();
         }
 
+        // Training
+        training = true;
+        long startTime = System.nanoTime();
+        dql.train();
+        long endTime = System.nanoTime();
+        long trainingTime =(endTime-startTime)/1000000000;
+        Logger.getAnonymousLogger().info("[Time] Total training time (seconds):"+trainingTime);
+        training = false;
+
+        // Evaluation
         System.out.println("[Play] Starting experiment [iteration: "+ iteration +"] ");
         int EPISODES = 10;
         double rewards = 0;
