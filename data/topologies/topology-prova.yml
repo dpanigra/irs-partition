@@ -11,7 +11,7 @@ tasks:
   # Services
   frontend-service:
     type: image
-    replication: 3
+    replication: 1
     state:
       - active
       - restarted

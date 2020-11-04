@@ -53,11 +53,11 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.active, false);
             this.set(resourceId, State.restarted, false);
             this.set(resourceId, State.corrupted, true);
-            this.set(resourceId, State.corrupted, false); //changed
+            //this.set(resourceId, State.corrupted, false); //changed
             this.set(resourceId, State.shellCorrupted, true);
-            this.set(resourceId, State.shellCorrupted, false); //changed
+            //this.set(resourceId, State.shellCorrupted, false); //changed
             this.set(resourceId, State.cartCorrupted, true);
-            this.set(resourceId, State.cartCorrupted, false); //changed
+            //this.set(resourceId, State.cartCorrupted, false); //changed
             this.set(resourceId, State.confidentialityVulnerability, true);
             //this.set(resourceId, State.confidentialityVulnerability, false); //changed
             this.set(resourceId, State.integrityVulnerability, true);

@@ -44,9 +44,9 @@ public class SystemTerminateFunction implements TerminateFunction<SystemState> {
             integrityVuln = systemState.get(resourceId, State.integrityVulnerability);
 
             if (    (active != null && !active ) ||
-                   // ( corrupted != null && corrupted) ||
-                    //( shellCorrupted != null && shellCorrupted) ||
-                    //( cartCorrupted != null && cartCorrupted) ||
+                    ( corrupted != null && corrupted) ||
+                    ( shellCorrupted != null && shellCorrupted) ||
+                    ( cartCorrupted != null && cartCorrupted) ||
                     ( confidentialityVuln != null && confidentialityVuln) ||
                     ( integrityVuln != null && integrityVuln) )
                 return false;
