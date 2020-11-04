@@ -53,7 +53,7 @@ public class DynDQNMain {
         //runWithThreshold();
         //runWithTimer();
 
-        for (; iteration<3 ; iteration++ ) {
+        for (; iteration<2 ; iteration++ ) {
             System.out.println("---------------------");
             System.out.println("Iteration "+iteration);
             System.out.println("---------------------");
@@ -144,8 +144,8 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
                 Integer.parseInt(argsMap.getOrDefault("maxStep", "10000")),           //Max step
-                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
-                Integer.parseInt(argsMap.getOrDefault("batchSize", "256")),           //size of batches
+                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "10000")),      //Max size of experience replay
+                Integer.parseInt(argsMap.getOrDefault("batchSize", "512")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
