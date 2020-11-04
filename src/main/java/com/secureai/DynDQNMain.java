@@ -138,9 +138,7 @@ public class DynDQNMain {
         // topology.getTasks().get("worker").setReplication(topology.getTasks().get("worker").getReplication() + iteration);
 
 
-        QLearning.QLConfiguration qlConfiguration;
-
-        qlConfiguration = new QLearning.QLConfiguration(
+        QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
                 Integer.parseInt(argsMap.getOrDefault("maxStep", "10000")),           //Max step
@@ -158,41 +156,7 @@ public class DynDQNMain {
 
         System.out.println("--- batch size: "+qlConfiguration.getBatchSize());
 
-        /*
-        if(actionSetId.equals("1-vms")) {
-             qlConfiguration = new QLearning.QLConfiguration(
-                    Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
-                    Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
-                    Integer.parseInt(argsMap.getOrDefault("maxStep", "5000")),           //Max step
-                    Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
-                    Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
-                    Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
-                    Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
-                    Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
-                    Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
-                    Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
-                    Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                    Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "5000")),      //num step for eps greedy anneal
-                    Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
-            );
-        }
-        else{
-            qlConfiguration = new QLearning.QLConfiguration(
-                    Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
-                    Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
-                    Integer.parseInt(argsMap.getOrDefault("maxStep", "5000")),           //Max step
-                    Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
-                    Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
-                    Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
-                    Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
-                    Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
-                    Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
-                    Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
-                    Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                    Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "1000")),      //num step for eps greedy anneal
-                    Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
-            );
-        }*/
+
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         if (nn == null)
             nn = new NNBuilder().build(newMdp.getObservationSpace().size(), newMdp.getActionSpace().getSize(), Integer.parseInt(argsMap.getOrDefault("layers", "3")));
