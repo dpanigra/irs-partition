@@ -196,7 +196,7 @@ public class DynDQNMain {
 
         // Evaluation
         System.out.println("[Play] Starting experiment [iteration: "+ iteration +"] ");
-        int EPISODES = 10;
+        int EPISODES = 3;
         double rewards = 0;
         for (int i = 0; i < EPISODES; i++) {
             System.out.println("mdp reset");
