@@ -10,7 +10,6 @@ tasks:
       - restarted
       - corrupted
       - shellCorrupted
-      -
   # Databases
   redis-cache:
     type: database
