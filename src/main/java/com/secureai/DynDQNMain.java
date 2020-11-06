@@ -137,10 +137,10 @@ public class DynDQNMain {
         // increase workers
         // topology.getTasks().get("worker").setReplication(topology.getTasks().get("worker").getReplication() + iteration);
 
-        String steps = "15000";
+        String steps = "30000";
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
-                Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
+                Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "250")),       //Max step By epoch
                 Integer.parseInt(argsMap.getOrDefault("maxStep", steps)),           //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "10000")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches

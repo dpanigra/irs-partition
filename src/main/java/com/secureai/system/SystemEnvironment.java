@@ -58,8 +58,11 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
     }
 
     public SystemState reset() {
-        //this.stat.append(this.cumulativeReward);
-        //System.out.println(String.format("[Episode %d][Steps: %d][Cumulative Reward: %f][Action bins %s]", this.episodes, this.step, this.cumulativeReward, this.actionCounter));
+        if(this.step != 0){
+            this.stat.append(this.cumulativeReward);
+            System.out.println(String.format("[Episode %d][Steps: %d][Cumulative Reward: %f][Action bins %s]", this.episodes, this.step, this.cumulativeReward, this.actionCounter));
+        }
+
         this.systemState.reset();
         this.step = 0;
         this.episodes++;
@@ -81,10 +84,10 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
         boolean done = this.isDone();
         this.actionCounter.increment(String.format("%s-%s", action.getResourceId(), action.getActionId()));
         this.cumulativeReward += reward;
-        if (done) {
+        /*if (done) {
             this.stat.append(this.cumulativeReward);
             System.out.println(String.format("[Episode %d][Steps: %d][Cumulative Reward: %f][Action bins %s]", this.episodes, this.step, this.cumulativeReward, this.actionCounter));
-        }
+        }*/
         //System.out.println("ACTION STEP: " + a + "; REWARD: " + reward); //nsccf
 
         return new StepReply<>(currentState, reward, isDone(), new JSONObject("{}"));
