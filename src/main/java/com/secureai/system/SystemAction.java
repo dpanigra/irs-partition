@@ -18,6 +18,8 @@ public class SystemAction {
         boolean print = false;
         if(!DynDQNMain.training)
             print = true;
+        if(this.actionId.equals("restrictAccess"))
+            printResourceState(environment);
         Action action = environment.getActionSet().getActions().get(this.actionId);
         /*if(print)
             System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId); */

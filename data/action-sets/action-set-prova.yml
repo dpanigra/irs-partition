@@ -38,12 +38,6 @@ actions:
     pre-condition: state[active] == true && state[shellCorrupted] == true
     post-condition: state[shellCorrupted] = rand(0), state[corrupted] = rand(0)
 
-  enablePassword:
-    execution-time: 1000
-    execution-cost: 1000
-    pre-condition: state[active] == true && state[passwordRequired] == false && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
-    post-condition: state[passwordRequired] = rand(1), state[confidentialityVulnerability] = rand(0), state[integrityVulnerability] = rand(0)
-
   disableDangerousCmd:
     execution-time: 50
     execution-cost: 500
@@ -55,6 +49,14 @@ actions:
     execution-cost: 300
     pre-condition: state[active] == true && state[accessRestricted] == false && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
     post-condition: state[confidentialityVulnerability] = rand(0.5) , state[integrityVulnerability] = rand(0.5) , state[accessRestricted] = rand(1)
+
+  enablePassword:
+    execution-time: 1000
+    execution-cost: 1000
+    pre-condition: state[active] == true && state[passwordRequired] == false && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
+    post-condition: state[passwordRequired] = rand(1), state[confidentialityVulnerability] = rand(0), state[integrityVulnerability] = rand(0)
+
+
 
 
 
