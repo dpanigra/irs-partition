@@ -1,9 +1,6 @@
 id: topology-2-containers
 
 tasks:
-
-
-
   # Services
   frontend-service:
     type: image
@@ -13,8 +10,7 @@ tasks:
       - restarted
       - corrupted
       - shellCorrupted
-
-
+      -
   # Databases
   redis-cache:
     type: database
