@@ -19,13 +19,14 @@ public class SystemAction {
         if(!DynDQNMain.training)
             print = true;
         Action action = environment.getActionSet().getActions().get(this.actionId);
-        if(print)
-            System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId);
+        /*if(print)
+            System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId); */
         if (checkPreconditions(environment, action)){
             if(print)
                 System.out.println("RUN Action: "+this.actionId+" : "+this.resourceId);
             action.getPostCondition().run(environment.getSystemState(), this.resourceId);
-            //printResourceState(environment);
+            if(this.actionId.equals("restrictAccess") && print)
+                printResourceState(environment);
         }
     }
 

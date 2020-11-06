@@ -53,8 +53,8 @@ actions:
   restrictAccess:
     execution-time: 50
     execution-cost: 300
-    pre-condition: state[active] == true && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
-    post-condition: state[confidentialityVulnerability] = rand(0.7) , state[integrityVulnerability] = rand(0.7)
+    pre-condition: state[active] == true && state[accessRestricted] == false && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
+    post-condition: state[confidentialityVulnerability] = rand(0.7) , state[integrityVulnerability] = rand(0.7), state[accessRestricted] = rand(1)
 
 
 

@@ -1,17 +1,13 @@
 id: topology-2-containers
 
 tasks:
-  # Classic Api Gateway
-  api-gateway-main:
-    type: api-gateway
-    replication: 1
-    state:
-      - active
+
+
 
   # Services
   frontend-service:
     type: image
-    replication: 1
+    replication: 2
     state:
       - active
       - restarted
