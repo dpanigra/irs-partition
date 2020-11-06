@@ -1,5 +1,6 @@
 package com.secureai.system;
 
+import com.secureai.Config;
 import com.secureai.model.actionset.ActionSet;
 import com.secureai.model.topology.Topology;
 import com.secureai.rl.abs.SMDP;
@@ -60,7 +61,7 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
     public SystemState reset() {
         if(this.step != 0){
             this.stat.append(this.cumulativeReward);
-            System.out.println(String.format("[Episode %d][Steps: %d][Cumulative Reward: %f][Action bins %s]", this.episodes, this.step, this.cumulativeReward, this.actionCounter));
+            System.out.println(String.format(Config.GREEN+"[Episode %d][Steps: %d][Cumulative Reward: %f]"+Config.RESET+"[Action bins %s]", this.episodes, this.step, this.cumulativeReward, this.actionCounter));
         }
 
         this.systemState.reset();
