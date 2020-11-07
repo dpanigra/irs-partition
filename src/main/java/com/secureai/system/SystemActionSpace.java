@@ -6,9 +6,13 @@ import org.deeplearning4j.rl4j.space.DiscreteSpace;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import com.secureai.model.actionset.Action;
 
 public class SystemActionSpace extends DiscreteSpace {
 
@@ -18,11 +22,28 @@ public class SystemActionSpace extends DiscreteSpace {
     @Getter
     private List<String> map;
 
-    public SystemActionSpace(SystemEnvironment environment) {
-        super(environment.getSystemDefinition().getResources().size() * environment.getActionSet().getActions().size());
+    public SystemActionSpace(SystemEnvironment environment, int size) {
+        //super(environment.getSystemDefinition().getResources().size() * environment.getActionSet().getActions().size());
+        super(size);
         this.rnd.setSeed(12345);
         this.environment = environment;
-        this.map = this.environment.getSystemDefinition().getResources().stream().flatMap(resourceId -> environment.getActionSet().getActions().keySet().stream().map(actionId -> String.format("%s.%s", resourceId, actionId))).collect(Collectors.toList());
+        //this.map = this.environment.getSystemDefinition().getResources().stream().flatMap(resourceId -> environment.getActionSet().getActions().keySet().stream().map(actionId -> String.format("%s.%s", resourceId, actionId))).collect(Collectors.toList());
+
+        this.map = new ArrayList<>();
+
+        for(String resourceId : this.environment.getSystemDefinition().getResources()){
+            for(Map.Entry<String , Action> entry : environment.getActionSet().getActions().entrySet()){
+                for(String taskId : entry.getValue().getTaskList()){
+                    if(taskId.equals(resourceId.substring(0, resourceId.lastIndexOf('.')))){
+                        this.map.add(String.format("%s.%s", resourceId,  entry.getKey()));
+                    }
+                }
+            }
+        }
+
+        for(String s : this.map)
+            System.out.println("--- Action: "+s);
+
     }
 
     @Override

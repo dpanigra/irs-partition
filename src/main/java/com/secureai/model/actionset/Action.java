@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.secureai.system.SystemState;
 import lombok.Data;
 
+import com.secureai.model.topology.Task;
+import java.util.List;
+
 @Data
 public class Action {
     @JsonProperty("execution-time")
@@ -30,4 +33,9 @@ public class Action {
     public interface PostNodeStateFunction {
         void run(SystemState state, String resourceId);
     }
+
+    @JsonProperty("components")
+    private List<String> taskList;
+
+
 }
