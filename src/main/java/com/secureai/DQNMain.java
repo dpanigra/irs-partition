@@ -86,7 +86,6 @@ public class DQNMain {
         int EPISODES = 10;
         double rewards = 0;
         for (int i = 0; i < EPISODES; i++) {
-            System.out.println("mdp reset");
             mdp.reset();
             System.out.println("play policy");
             double reward = dql.getPolicy().play(mdp);
