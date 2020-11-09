@@ -40,8 +40,8 @@ public class SystemRewardFunction implements RewardFunction<SystemState, SystemA
             System.out.println("Terminal State!");
             return 0;
         }*/
-
-        return -(Config.TIME_WEIGHT * (action.getExecutionTime() / this.maxExecutionTime) + Config.COST_WEIGHT * (action.getExecutionCost() / this.maxExecutionCost));
+        return -1;
+        //return -(Config.TIME_WEIGHT * (action.getExecutionTime() / this.maxExecutionTime) + Config.COST_WEIGHT * (action.getExecutionCost() / this.maxExecutionCost));
     }
 
 }
