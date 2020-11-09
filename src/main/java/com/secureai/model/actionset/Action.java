@@ -34,8 +34,8 @@ public class Action {
         void run(SystemState state, String resourceId);
     }
 
-    //@JsonProperty("components") // variable action set
-    //private List<String> taskList;
+    @JsonProperty("components") // variable action set
+    private List<String> taskList;
 
 
 }

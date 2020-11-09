@@ -14,7 +14,7 @@ public class ActionSet {
     private Map<String, Action> actions;
 
     // variable action set
-   /*public int actionSpaceSize(SystemDefinition systemDef){
+    public int actionSpaceSize(SystemDefinition systemDef){
         int sum = 0;
         for(Action a : this.actions.values()){
             for (String id : a.getTaskList()){
@@ -27,5 +27,5 @@ public class ActionSet {
             }
         }
         return sum;
-    }*/
+    }
 }

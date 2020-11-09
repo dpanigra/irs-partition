@@ -42,8 +42,8 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
     public SystemEnvironment(Topology topology, ActionSet actionSet) {
         this.actionSet = actionSet;
         this.systemDefinition = new SystemDefinition(topology);
-        //this.actionSpace = new SystemActionSpace(this, this.actionSet.actionSpaceSize(systemDefinition)); // variable action set
-        this.actionSpace = new SystemActionSpace(this);
+        this.actionSpace = new SystemActionSpace(this, this.actionSet.actionSpaceSize(systemDefinition)); // variable action set
+        //this.actionSpace = new SystemActionSpace(this);
         this.observationSpace = new SystemStateSpace(this, this.getSystemDefinition().getSystemStateSize());
         this.systemState = new SystemState(this, this.getSystemDefinition().getSystemStateSize());
         this.systemRewardFunction = new SystemRewardFunction(this);
