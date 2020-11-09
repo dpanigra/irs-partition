@@ -34,14 +34,7 @@ public class SystemRewardFunction implements RewardFunction<SystemState, SystemA
             return -2; // This is the reward if the policy choose an action that cannot be run or keeps the system in the same state
         }
 
-
-        if(environment.isDone())
-        {
-            System.out.println("Terminal State!");
-            return 10;
-        }
-        return -1;
-        //return -(Config.TIME_WEIGHT * (action.getExecutionTime() / this.maxExecutionTime) + Config.COST_WEIGHT * (action.getExecutionCost() / this.maxExecutionCost));
+        return -(Config.TIME_WEIGHT * (action.getExecutionTime() / this.maxExecutionTime) + Config.COST_WEIGHT * (action.getExecutionCost() / this.maxExecutionCost));
     }
 
 }
