@@ -63,10 +63,10 @@ public class SystemState extends DiscreteState {
             //-------------------------------------------------------------------------------------
 
             // Model 2 containers
-            this.set(resourceId, State.active, true); //
+            this.set(resourceId, State.active, false);
             this.set(resourceId, State.restarted, false);
-            this.set(resourceId, State.corrupted, false); //
-            this.set(resourceId, State.shellCorrupted, false); //
+            this.set(resourceId, State.corrupted, true);
+            this.set(resourceId, State.shellCorrupted, true);
             this.set(resourceId, State.cartCorrupted, true);
             this.set(resourceId, State.confidentialityVulnerability, true);
             this.set(resourceId, State.integrityVulnerability, true);
