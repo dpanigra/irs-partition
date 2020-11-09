@@ -2,6 +2,7 @@ package com.secureai.system;
 
 import com.secureai.Config;
 import com.secureai.model.actionset.ActionSet;
+import com.secureai.model.stateset.State;
 import com.secureai.model.topology.Topology;
 import com.secureai.rl.abs.SMDP;
 import com.secureai.utils.MapCounter;
@@ -41,8 +42,8 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
     public SystemEnvironment(Topology topology, ActionSet actionSet) {
         this.actionSet = actionSet;
         this.systemDefinition = new SystemDefinition(topology);
-        this.actionSpace = new SystemActionSpace(this, this.actionSet.actionSpaceSize(systemDefinition));
-       // this.actionSpace = new SystemActionSpace(this, this.actionSet.actionSpaceSize());
+        //this.actionSpace = new SystemActionSpace(this, this.actionSet.actionSpaceSize(systemDefinition)); // variable action set
+        this.actionSpace = new SystemActionSpace(this);
         this.observationSpace = new SystemStateSpace(this, this.getSystemDefinition().getSystemStateSize());
         this.systemState = new SystemState(this, this.getSystemDefinition().getSystemStateSize());
         this.systemRewardFunction = new SystemRewardFunction(this);
@@ -79,18 +80,15 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
 
         SystemState oldState = this.systemState.copy();
         SystemAction action = this.actionSpace.encode(a);
+        boolean runnable = action.checkPreconditions(this, this.getActionSet().getActions().get(action.getActionId()));
         action.run(this);
         SystemState currentState = this.systemState.copy();
 
-        double reward = systemRewardFunction.reward(oldState, action, currentState);
+        double reward = systemRewardFunction.reward(action, runnable);
+        //double reward = systemRewardFunction.reward(oldState, action, currentState);
         boolean done = this.isDone();
         this.actionCounter.increment(String.format("%s-%s", action.getResourceId(), action.getActionId()));
         this.cumulativeReward += reward;
-        /*if (done) {
-            this.stat.append(this.cumulativeReward);
-            System.out.println(String.format("[Episode %d][Steps: %d][Cumulative Reward: %f][Action bins %s]", this.episodes, this.step, this.cumulativeReward, this.actionCounter));
-        }*/
-        //System.out.println("ACTION STEP: " + a + "; REWARD: " + reward); //nsccf
 
         return new StepReply<>(currentState, reward, isDone(), new JSONObject("{}"));
     }
@@ -109,4 +107,16 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
     public void setState(SystemState state) {
         this.systemState = state;
     }
+
+
+    public void printResourceState(String resourceId){
+        // Print resource state
+        System.out.print(resourceId+":: ");
+        for (State s: State.values()) {
+            if( this.getSystemState().get(resourceId, s) != null)
+                System.out.print(s+":"+this.getSystemState().get(resourceId, s)+"; ");
+        }
+        System.out.print("\n");
+    }
+
 }

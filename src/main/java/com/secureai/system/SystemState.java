@@ -17,10 +17,9 @@ public class SystemState extends DiscreteState {
     @Override
     public void reset() {
         super.reset();
-        //System.out.println("Reset state");
+
         this.worst();
         //this.random();
-
     }
 
 
@@ -110,4 +109,7 @@ public class SystemState extends DiscreteState {
     protected SystemState copy() {
         return this.newInstance(this.toInt());
     }
+
+
+
 }

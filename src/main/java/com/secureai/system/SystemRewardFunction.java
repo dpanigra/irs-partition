@@ -6,6 +6,8 @@ import com.secureai.model.actionset.Action;
 import com.secureai.rl.abs.RewardFunction;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 public class SystemRewardFunction implements RewardFunction<SystemState, SystemAction> {
 
     private SystemEnvironment environment;
@@ -28,7 +30,7 @@ public class SystemRewardFunction implements RewardFunction<SystemState, SystemA
         Action action = this.environment.getActionSet().getActions().get(systemAction.getActionId());
         //if (oldState.equals(currentState))
 
-        if(oldState.equals(currentState) && systemAction.checkPreconditions(this.environment, action) != true) {
+        if(oldState.equals(currentState) /*&& systemAction.checkPreconditions(this.environment, action) != true*/  ) {
             if(!DynDQNMain.training)
                 System.out.println("Not executable action has been selected: "+systemAction.getActionId());
             return -2; // This is the reward if the policy choose an action that cannot be run or keeps the system in the same state
@@ -36,5 +38,21 @@ public class SystemRewardFunction implements RewardFunction<SystemState, SystemA
 
         return -(Config.TIME_WEIGHT * (action.getExecutionTime() / this.maxExecutionTime) + Config.COST_WEIGHT * (action.getExecutionCost() / this.maxExecutionCost));
     }
+
+    public double reward(SystemAction systemAction, boolean runnable) {
+
+        Action action = this.environment.getActionSet().getActions().get(systemAction.getActionId());
+        //if (oldState.equals(currentState))
+
+        if(!runnable) {
+            if(!DynDQNMain.training)
+                System.out.println("Not executable action has been selected: "+systemAction.getActionId());
+            return -2; // This is the reward if the policy choose an action that cannot be run or keeps the system in the same state
+        }
+
+        return -(Config.TIME_WEIGHT * (action.getExecutionTime() / this.maxExecutionTime) + Config.COST_WEIGHT * (action.getExecutionCost() / this.maxExecutionCost));
+    }
+
+
 
 }

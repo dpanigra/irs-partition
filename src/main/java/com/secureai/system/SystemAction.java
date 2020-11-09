@@ -15,36 +15,25 @@ public class SystemAction {
     private String actionId;
 
     public void run(SystemEnvironment environment) {
-        boolean print = false;
-        if(!DynDQNMain.training)
-            print = true;
+
         Action action = environment.getActionSet().getActions().get(this.actionId);
-       
-        /*if(print)
-            System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId); */
+
+        if(!DynDQNMain.training){
+            environment.printResourceState(resourceId);
+            System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId);
+        }
+
         if (checkPreconditions(environment, action)){
-            if(print)
-                System.out.println("RUN Action: "+this.actionId+" -> "+this.resourceId);
             action.getPostCondition().run(environment.getSystemState(), this.resourceId);
-            if(print && this.actionId.equals("restrictAccess"))
-                printResourceState(environment);
+            if(!DynDQNMain.training) {
+                System.out.println("RUN Action: " + this.actionId + " -> " + this.resourceId);
+                environment.printResourceState(resourceId);
+            }
         }
     }
 
     public Boolean checkPreconditions(SystemEnvironment environment, Action action) {
         return action.getPreCondition().run(environment.getSystemState(), this.resourceId);
-    }
-
-
-
-    private void printResourceState(SystemEnvironment environment){
-        // Print resource state
-        System.out.print(resourceId+":: ");
-        for (State s: State.values()) {
-            if( environment.getSystemState().get(resourceId, s) != null)
-                System.out.print(s+":"+environment.getSystemState().get(resourceId, s)+"; ");
-        }
-        System.out.print("\n");
     }
 
 }

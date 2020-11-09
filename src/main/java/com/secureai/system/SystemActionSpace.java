@@ -22,15 +22,16 @@ public class SystemActionSpace extends DiscreteSpace {
     @Getter
     private List<String> map;
 
-    public SystemActionSpace(SystemEnvironment environment, int size) {
-        //super(environment.getSystemDefinition().getResources().size() * environment.getActionSet().getActions().size());
-        super(size);
+    //public SystemActionSpace(SystemEnvironment environment, int size) { // variable action set // variable action set
+    public SystemActionSpace(SystemEnvironment environment) {
+        super(environment.getSystemDefinition().getResources().size() * environment.getActionSet().getActions().size());
+        //super(size); // variable action set
         this.rnd.setSeed(12345);
         this.environment = environment;
-        //this.map = this.environment.getSystemDefinition().getResources().stream().flatMap(resourceId -> environment.getActionSet().getActions().keySet().stream().map(actionId -> String.format("%s.%s", resourceId, actionId))).collect(Collectors.toList());
+        this.map = this.environment.getSystemDefinition().getResources().stream().flatMap(resourceId -> environment.getActionSet().getActions().keySet().stream().map(actionId -> String.format("%s.%s", resourceId, actionId))).collect(Collectors.toList());
 
+        /* // variable action set
         this.map = new ArrayList<>();
-
         for(String resourceId : this.environment.getSystemDefinition().getResources()){
             for(Map.Entry<String , Action> entry : environment.getActionSet().getActions().entrySet()){
                 for(String taskId : entry.getValue().getTaskList()){
@@ -39,7 +40,7 @@ public class SystemActionSpace extends DiscreteSpace {
                     }
                 }
             }
-        }
+        }*/
 
         for(String s : this.map)
             System.out.println("--- Action: "+s);
