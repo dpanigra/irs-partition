@@ -18,8 +18,8 @@ public class SystemState extends DiscreteState {
     public void reset() {
         super.reset();
         //System.out.println("Reset state");
-        this.worst();
-        //this.random();
+        //this.worst();
+        this.random();
 
     }
 
@@ -28,6 +28,19 @@ public class SystemState extends DiscreteState {
     public void random() {
         this.environment.getSystemDefinition().getResources().forEach(resourceId -> {
             this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.7);
+            //-------------------------------------------------------------------------------------
+
+            // Model 2 containers
+            this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.restarted, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.corrupted, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.shellCorrupted, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.cartCorrupted, true);
+            this.set(resourceId, State.confidentialityVulnerability, true);
+            this.set(resourceId, State.integrityVulnerability, true);
+            this.set(resourceId, State.passwordRequired, false);
+            this.set(resourceId, State.dangerousCmdEnabled, true);
+            this.set(resourceId, State.accessRestricted, false);
         });
     }
 
@@ -53,15 +66,10 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.active, false);
             this.set(resourceId, State.restarted, false);
             this.set(resourceId, State.corrupted, true);
-            //this.set(resourceId, State.corrupted, false); //changed
             this.set(resourceId, State.shellCorrupted, true);
-            //this.set(resourceId, State.shellCorrupted, false); //changed
             this.set(resourceId, State.cartCorrupted, true);
-            //this.set(resourceId, State.cartCorrupted, false); //changed
             this.set(resourceId, State.confidentialityVulnerability, true);
-            //this.set(resourceId, State.confidentialityVulnerability, false); //changed
             this.set(resourceId, State.integrityVulnerability, true);
-            //this.set(resourceId, State.integrityVulnerability, false); //changed
             this.set(resourceId, State.passwordRequired, false);
             this.set(resourceId, State.dangerousCmdEnabled, true);
             this.set(resourceId, State.accessRestricted, false);

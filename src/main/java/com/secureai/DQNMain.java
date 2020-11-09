@@ -59,7 +59,10 @@ public class DQNMain {
         );
 
         SystemEnvironment mdp = new SystemEnvironment(topology, actionSet);
-        FilteredMultiLayerNetwork nn = new NNBuilder().build(mdp.getObservationSpace().size(), mdp.getActionSpace().getSize(), Integer.parseInt(argsMap.getOrDefault("layers", "3")));
+        FilteredMultiLayerNetwork nn = new NNBuilder().build(mdp.getObservationSpace().size(),
+                mdp.getActionSpace().getSize(),
+                Integer.parseInt(argsMap.getOrDefault("layers", "3")),
+                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")));
         //nn.setMultiLayerNetworkPredictionFilter(input -> mdp.getActionSpace().actionsMask(input));
         nn.setListeners(new ScoreIterationListener(100));
         //nn.setListeners(new PerformanceListener(1, true, true));

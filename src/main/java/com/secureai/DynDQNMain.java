@@ -137,29 +137,30 @@ public class DynDQNMain {
         // increase workers
         topology.getTasks().get("frontend-service").setReplication(topology.getTasks().get("frontend-service").getReplication() + iteration);
 
-        String steps = "15000";
+        //String steps = "15000";
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "60000")),           //Max step
-                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "10000")),      //Max size of experience replay
-                Integer.parseInt(argsMap.getOrDefault("batchSize", "512")),           //size of batches
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "20000")),           //Max step
+                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
+                Integer.parseInt(argsMap.getOrDefault("batchSize", "256")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "60000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "10000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
-        if (nn == null)
-            nn = new NNBuilder().build(newMdp.getObservationSpace().size(), newMdp.getActionSpace().getSize(), Integer.parseInt(argsMap.getOrDefault("layers", "3")));
-        else {
-            nn = new NNBuilder().build(newMdp.getObservationSpace().size(), newMdp.getActionSpace().getSize(), Integer.parseInt(argsMap.getOrDefault("layers", "3")));
+        nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
+                    newMdp.getActionSpace().getSize(),
+                    Integer.parseInt(argsMap.getOrDefault("layers", "3")),
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")));
+        if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
                     .forLayer(0).transferIn(mdp.getObservationSpace().getMap(), newMdp.getObservationSpace().getMap()) //to use Standard Transfer Learning just use replaceIn or replaceOut
                     .forLayer(-1).transferOut(mdp.getActionSpace().getMap(), newMdp.getActionSpace().getMap())
