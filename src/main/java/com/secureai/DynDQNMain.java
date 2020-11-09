@@ -142,24 +142,27 @@ public class DynDQNMain {
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "15000")),           //Max step
-                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
-                Integer.parseInt(argsMap.getOrDefault("batchSize", "2048")),           //size of batches
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "30000")),           //Max step
+                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
+                Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
-                Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
+                Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "10000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "20000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
+
+        System.out.println("Q-Learning configuration: "+qlConfiguration.toString());
 
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                     newMdp.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")));
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "256")),
+                    Double.parseDouble(argsMap.getOrDefault("learningRate", "0.001")));
         if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
                     .forLayer(0).transferIn(mdp.getObservationSpace().getMap(), newMdp.getObservationSpace().getMap()) //to use Standard Transfer Learning just use replaceIn or replaceOut

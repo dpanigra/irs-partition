@@ -12,12 +12,12 @@ import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
 
 public class NNBuilder {
 
-    public FilteredMultiLayerNetwork build(int inputs, int outputs, int size, int hidden_size) {
+    public FilteredMultiLayerNetwork build(int inputs, int outputs, int size, int hidden_size, double learningRate) {
         //int HIDDEN_SIZE = 64;
         NeuralNetConfiguration.ListBuilder builder = new NeuralNetConfiguration.Builder()
                 .seed(12345)
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
-                .updater(new Adam(0.001))
+                .updater(new Adam(learningRate))
                 .weightInit(WeightInit.XAVIER)
                 .list()
                 .layer(new DenseLayer.Builder()
