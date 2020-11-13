@@ -18,16 +18,16 @@ public class SystemAction {
 
         Action action = environment.getActionSet().getActions().get(this.actionId);
 
-        if(!DynDQNMain.training){
+        /*if(!DynDQNMain.training){
             environment.printResourceState(resourceId);
             System.out.println("Evaluating Action: "+this.actionId+" : "+this.resourceId);
-        }
+        }*/
 
         if (checkPreconditions(environment, action)){
             action.getPostCondition().run(environment.getSystemState(), this.resourceId);
             if(!DynDQNMain.training) {
                 System.out.println("RUN Action: " + this.actionId + " -> " + this.resourceId);
-                environment.printResourceState(resourceId);
+                //environment.printResourceState(resourceId);
             }
         }
     }

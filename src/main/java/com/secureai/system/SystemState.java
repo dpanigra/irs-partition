@@ -5,6 +5,9 @@ import com.secureai.utils.RandomUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import com.secureai.model.stateset.State;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 public class SystemState extends DiscreteState {
 
     private SystemEnvironment environment;
@@ -17,16 +20,24 @@ public class SystemState extends DiscreteState {
     @Override
     public void reset() {
         super.reset();
-
         this.worst();
-        //this.random();
+    }
+
+    public void reset(boolean rnd) {
+        super.reset();
+
+        if(rnd)
+            this.random();
+        else
+            this.worst();
     }
 
 
 
     public void random() {
         this.environment.getSystemDefinition().getResources().forEach(resourceId -> {
-            this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.7);
+            // Model 1 VMs
+
             //-------------------------------------------------------------------------------------
 
             // Model 2 containers
@@ -95,9 +106,16 @@ public class SystemState extends DiscreteState {
         return new SystemState(this.environment, this.environment.getSystemDefinition().getSystemStateSize());
     }
 
+    /*
     public SystemState newInstance(int value) {
         SystemState result = this.newInstance();
         result.setFromInt(value);
+        return result;
+    }*/
+
+    public SystemState newInstance(int[] values) {
+        SystemState result = this.newInstance();
+        IntStream.range(0, this.environment.getSystemDefinition().getSystemStateSize()).forEach(i -> result.set(values[i], i));
         return result;
     }
 
@@ -107,7 +125,8 @@ public class SystemState extends DiscreteState {
     }
 
     protected SystemState copy() {
-        return this.newInstance(this.toInt());
+      //return this.newInstance(this.toInt());
+        return this.newInstance(this.toIntArray());
     }
 
 

@@ -42,6 +42,7 @@ public class DiscreteState implements Encodable {
         return Arrays.stream(this.state).mapToInt(v -> (int) v).toArray();
     }
 
+
     public int toInt() {
         return ArrayUtils.toBase10(this.toIntArray(), 2);
     }
@@ -70,6 +71,6 @@ public class DiscreteState implements Encodable {
     }
 
     public boolean equals(DiscreteState other) {
-        return Arrays.equals(state, other.state);
+        return Arrays.equals(this.state, other.state);
     }
 }

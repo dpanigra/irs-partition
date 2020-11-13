@@ -55,11 +55,11 @@ public class SystemActionSpace extends DiscreteSpace {
     public Integer decode(SystemAction systemAction) {
         return this.map.indexOf(String.format("%s.%s", systemAction.getResourceId(), systemAction.getActionId()));
     }
-
+/*
     public Double[] actionsMask(int encodedState) {
         return this.actionsMask(this.environment.getSystemState().newInstance(encodedState));
     }
-
+*/
     public Double[] actionsMask(SystemState systemState) {
         return IntStream.range(0, this.map.size()).mapToObj(i -> {
             SystemAction systemAction = this.encode(i);

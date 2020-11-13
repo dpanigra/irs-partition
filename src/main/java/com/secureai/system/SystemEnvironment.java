@@ -84,8 +84,18 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
         action.run(this);
         SystemState currentState = this.systemState.copy();
 
-        double reward = systemRewardFunction.reward(action, runnable);
-        //double reward = systemRewardFunction.reward(oldState, action, currentState);
+        /*if(runnable){
+            System.out.println(oldState.equals(currentState));
+            System.out.println("---------------------------");
+            for(int i=0; i<this.getObservationSpace().size(); i++)
+            {
+                System.out.println(i+") "+this.getObservationSpace().getMap().get(i)+" : "+this.getSystemState().toIntArray()[i]);
+            }
+            System.out.println("---------------------------");
+        }*/
+
+        //double reward = systemRewardFunction.reward(action, runnable);
+        double reward = systemRewardFunction.reward(oldState, action, currentState);
         boolean done = this.isDone();
         this.actionCounter.increment(String.format("%s-%s", action.getResourceId(), action.getActionId()));
         this.cumulativeReward += reward;
