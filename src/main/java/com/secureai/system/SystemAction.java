@@ -3,7 +3,10 @@ package com.secureai.system;
 import com.secureai.DQNMain;
 import com.secureai.DynDQNMain;
 import com.secureai.model.actionset.Action;
+import com.secureai.model.actionset.ActionSet;
 import com.secureai.model.stateset.State;
+import com.secureai.utils.RandomUtils;
+import com.secureai.utils.YAML;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,6 +19,7 @@ public class SystemAction {
 
     public void run(SystemEnvironment environment) {
 
+
         Action action = environment.getActionSet().getActions().get(this.actionId);
 
         /*if(!DynDQNMain.training){
@@ -24,7 +28,7 @@ public class SystemAction {
         }*/
 
         if (checkPreconditions(environment, action)){
-            action.getPostCondition().run(environment.getSystemState(), this.resourceId);
+            action.getPostCondition().run(environment.getSystemState(), this.resourceId, RandomUtils.random.nextDouble());
             if(!DynDQNMain.training) {
                 System.out.println("RUN Action: " + this.actionId + " -> " + this.resourceId);
                 //environment.printResourceState(resourceId);

@@ -31,7 +31,7 @@ public class Action {
     }
 
     public interface PostNodeStateFunction {
-        void run(SystemState state, String resourceId);
+        void run(SystemState state, String resourceId, double rnd);
     }
 
     @JsonProperty("components") // variable action set
