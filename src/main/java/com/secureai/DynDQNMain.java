@@ -2,7 +2,6 @@ package com.secureai;
 
 import com.secureai.model.actionset.ActionSet;
 import com.secureai.model.topology.Topology;
-import com.secureai.model.topology.Task;
 import com.secureai.nn.DynNNBuilder;
 import com.secureai.nn.NNBuilder;
 import com.secureai.rl.abs.ParallelDQN;
@@ -140,10 +139,13 @@ public class DynDQNMain {
 
         //String steps = "15000";
 
+        int steps = (topology.getTasks().get("frontend-service").getReplication()+1) * 10000;
+
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "12000")),           //Max step
+                //Integer.parseInt(argsMap.getOrDefault("maxStep", "50000")),           //Max step
+                steps+10000, //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
@@ -152,7 +154,8 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "10000")),      //num step for eps greedy anneal
+                //Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "45000")),      //num step for eps greedy anneal
+                steps,  //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
@@ -162,8 +165,8 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                     newMdp.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
-                    Double.parseDouble(argsMap.getOrDefault("learningRate", "0.001")));
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "128")),
+                    Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
         if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
                     .forLayer(0).transferIn(mdp.getObservationSpace().getMap(), newMdp.getObservationSpace().getMap()) //to use Standard Transfer Learning just use replaceIn or replaceOut
@@ -199,16 +202,12 @@ public class DynDQNMain {
 
         // Evaluation
         System.out.println("[Play] Starting experiment [iteration: "+ iteration +"] ");
-        int EPISODES = 3;
+        int EPISODES = 10;
         double rewards = 0;
         for (int i = 0; i < EPISODES; i++) {
             mdp.reset();
             System.out.println("play policy");
             double reward = dql.getPolicy().play(mdp);
-            if(reward == -2){
-                Logger.getAnonymousLogger().info("Not executable action has been chosen.");
-                break;
-            }
             rewards += reward;
             Logger.getAnonymousLogger().info("[Evaluate] Reward: " + reward);
         }
