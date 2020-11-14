@@ -147,7 +147,7 @@ public class DynDQNMain {
                 //Integer.parseInt(argsMap.getOrDefault("maxStep", "50000")),           //Max step
                 steps+5000, //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
-                Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
+                Integer.parseInt(argsMap.getOrDefault("batchSize", "512")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
