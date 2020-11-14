@@ -139,13 +139,13 @@ public class DynDQNMain {
 
         //String steps = "15000";
 
-        int steps = (topology.getTasks().get("frontend-service").getReplication()+1) * 10000;
+        int steps = (topology.getTasks().get("frontend-service").getReplication()+1) * 5000;
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
                 //Integer.parseInt(argsMap.getOrDefault("maxStep", "50000")),           //Max step
-                steps+10000, //Max step
+                steps+5000, //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
@@ -165,7 +165,7 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                     newMdp.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "128")),
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
                     Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
         if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
@@ -206,7 +206,7 @@ public class DynDQNMain {
         double rewards = 0;
         for (int i = 0; i < EPISODES; i++) {
             mdp.reset();
-            System.out.println("play policy");
+            System.out.println("play policy (episode "+i+")");
             double reward = dql.getPolicy().play(mdp);
             rewards += reward;
             Logger.getAnonymousLogger().info("[Evaluate] Reward: " + reward);
