@@ -39,7 +39,7 @@ public class SystemState extends DiscreteState {
             // Model 1 VMs
 
             //-------------------------------------------------------------------------------------
-
+/*
             // Model 2 containers
             this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.restarted, RandomUtils.getRandom().nextDouble() < 0.5);
@@ -50,13 +50,13 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.integrityVulnerability, true);
             this.set(resourceId, State.passwordRequired, false);
             this.set(resourceId, State.dangerousCmdEnabled, true);
-            this.set(resourceId, State.accessRestricted, false);
+            this.set(resourceId, State.accessRestricted, false);*/
         });
     }
 
     public void worst() {
         this.environment.getSystemDefinition().getResources().forEach(resourceId -> {
-            /*
+
             // Model 1 VMs
             this.set(resourceId, State.active, false);
             this.set(resourceId, State.firewallBlockICMP, false);
@@ -69,9 +69,9 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.dockerRuncUpgradable, true);
             this.set(resourceId, State.dockerExecAvailable, true);
             this.set(resourceId, State.containerCorrupted, true);
-           */
-            //-------------------------------------------------------------------------------------
 
+            //-------------------------------------------------------------------------------------
+ /*
             // Model 2 containers
             this.set(resourceId, State.active, false);
             this.set(resourceId, State.restarted, false);
@@ -83,7 +83,7 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.passwordRequired, false);
             this.set(resourceId, State.dangerousCmdEnabled, true);
             this.set(resourceId, State.accessRestricted, false);
-            //
+            */
         });
     }
 

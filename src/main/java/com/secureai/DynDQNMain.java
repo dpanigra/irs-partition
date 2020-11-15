@@ -125,8 +125,8 @@ public class DynDQNMain {
         //String topologyId = switches == 1 ? "1" : "1"; // RandomUtils.getRandom(new String[]{"paper-4", "paper-7"});
        // String topologyId = RandomUtils.getRandom(new String[]{"1-vms", "prova"});
       //  String topologyId = iteration == 0 ? "1-vms" : "prova";
-        String topologyId = "prova";
-        String actionSetId = "prova";
+        String topologyId = "1-vms";
+        String actionSetId = "1-vms";
         //argsMap.put("epsilonNbStep", switches == 1 ? "0" : "0");
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
 
@@ -135,27 +135,30 @@ public class DynDQNMain {
 
 
         // increase workers
-        topology.getTasks().get("frontend-service").setReplication(topology.getTasks().get("frontend-service").getReplication() + iteration);
+        //topology.getTasks().get("frontend-service").setReplication(topology.getTasks().get("frontend-service").getReplication() + iteration);
 
         //String steps = "15000";
 
-        int steps = (topology.getTasks().get("frontend-service").getReplication()+1) * 10000;
+        /*int steps = (topology.getTasks().get("frontend-service").getReplication()+1) * 5000;
+        if(iteration > 0)
+            steps = (topology.getTasks().get("frontend-service").getReplication()+1) * 2000;
+        */
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
-                //Integer.parseInt(argsMap.getOrDefault("maxStep", "50000")),           //Max step
-                steps+5000, //Max step
-                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "500")),      //Max size of experience replay
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "35000")),           //Max step
+                //steps+5000, //Max step
+                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
-                Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                //Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "45000")),      //num step for eps greedy anneal
-                steps,  //num step for eps greedy anneal
+                Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "30000")),      //num step for eps greedy anneal
+                //steps,  //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
