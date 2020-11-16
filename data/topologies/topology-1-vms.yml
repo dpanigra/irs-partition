@@ -14,12 +14,13 @@ tasks:
 
   # Services
   master:
-    type: image
+    type: VM
     replication: 1
     state:
       - active
+
   worker:
-    type: image
+    type: VM
     replication: 2
     state:
       - active
