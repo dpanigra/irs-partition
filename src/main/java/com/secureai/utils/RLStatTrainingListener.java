@@ -10,7 +10,7 @@ public class RLStatTrainingListener implements TrainingListener {
     private Stat<Double> stat;
 
     public RLStatTrainingListener(String path) {
-        this.stat = new Stat<>(path + "/" + "reward.csv");
+        this.stat = new Stat<>(path + "/" + "reward.csv", System.nanoTime());
     }
 
     @Override
@@ -30,7 +30,7 @@ public class RLStatTrainingListener implements TrainingListener {
 
     @Override
     public ListenerResponse onEpochTrainingResult(IEpochTrainer iEpochTrainer, StatEntry statEntry) {
-        this.stat.append(statEntry.getReward());
+        this.stat.append(statEntry.getReward(), true);
         this.stat.flush();
         return null;
     }

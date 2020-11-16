@@ -38,7 +38,8 @@ public class DynDQNMain {
     static Map<String, String> argsMap;
     static int switches = 0;
     public static Integer iteration = 0;
-    public static ActionSet actionSet;
+    public static boolean evaluate = false;
+    public static int maxIterations;
 
     public static boolean training = true;
 
@@ -50,21 +51,22 @@ public class DynDQNMain {
 
         argsMap = ArgsUtils.toMap(args);
 
-        //runWithThreshold();
+        evaluate = true;
+
+        runWithThreshold();
         //runWithTimer();
 
-        for (; iteration<1 ; iteration++ ) {
-            System.out.println("---------------------");
-            System.out.println("Iteration "+iteration);
-            System.out.println("---------------------");
-            //queue.take().run();
-            setup();
+        for (maxIterations = 1; iteration < maxIterations ; iteration++ ) {
+            System.out.println("----------------------");
+            System.out.println("Iteration " + iteration);
+            System.out.println("----------------------");
+            queue.take().run();
         }
     }
 
     public static void runWithThreshold() {
-        int EPOCH_THRESHOLD = 40; // After 500 epochs
-
+        int EPOCH_THRESHOLD = 1000; // After X epochs
+        System.out.println("Entering runWithThreshold()");
         DynDQNMain.setup();
 
         dql.addListener(new EpochEndListener() {
@@ -72,6 +74,7 @@ public class DynDQNMain {
             public ListenerResponse onEpochTrainingResult(IEpochTrainer iEpochTrainer, StatEntry statEntry) {
                 if (iEpochTrainer.getEpochCounter() == EPOCH_THRESHOLD) {
                     System.out.println("THRESHOLD FIRED");
+                    if(evaluate) { evaluate(); }
                     Timer t = new Timer();
                     t.schedule(new TimerTask() {
                         @Override
@@ -79,13 +82,14 @@ public class DynDQNMain {
                             DynDQNMain.stop(DynDQNMain::runWithThreshold);
                             t.cancel();
                         }
-                    }, 5000);
+                    }, 1000);
                 }
                 return null;
             }
         });
+        System.out.println("Adding train to queue");
+        queue.add(DynDQNMain::train);
 
-        queue.add(dql::train);
     }
 
     public static void runWithTimer() {
@@ -121,34 +125,19 @@ public class DynDQNMain {
     }
 
     public static void setup() {
-       // if (switches++ > 2) System.exit(0);
-        //String topologyId = switches == 1 ? "1" : "1"; // RandomUtils.getRandom(new String[]{"paper-4", "paper-7"});
-       // String topologyId = RandomUtils.getRandom(new String[]{"1-vms", "prova"});
-      //  String topologyId = iteration == 0 ? "1-vms" : "prova";
+
         String topologyId = "1-vms";
         String actionSetId = "1-vms";
-        //argsMap.put("epsilonNbStep", switches == 1 ? "0" : "0");
+
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
 
         Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", topologyId), Topology.class);
-        actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
-
-
-        // increase workers
-        //topology.getTasks().get("frontend-service").setReplication(topology.getTasks().get("frontend-service").getReplication() + iteration);
-
-        //String steps = "15000";
-
-        /*int steps = (topology.getTasks().get("frontend-service").getReplication()+1) * 5000;
-        if(iteration > 0)
-            steps = (topology.getTasks().get("frontend-service").getReplication()+1) * 2000;
-        */
+        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
-                Integer.parseInt(argsMap.getOrDefault("maxStep", "35000")),           //Max step
-                //steps+5000, //Max step
+                Integer.parseInt(argsMap.getOrDefault("maxStep", "250000")),           //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
@@ -157,8 +146,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "30000")),      //num step for eps greedy anneal
-                //steps,  //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "20000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
@@ -168,14 +156,15 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                     newMdp.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "128")),
-                    Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
+                    Double.parseDouble(argsMap.getOrDefault("learningRate", "0.001")));
         if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
                     .forLayer(0).transferIn(mdp.getObservationSpace().getMap(), newMdp.getObservationSpace().getMap()) //to use Standard Transfer Learning just use replaceIn or replaceOut
                     .forLayer(-1).transferOut(mdp.getActionSpace().getMap(), newMdp.getActionSpace().getMap())
                     .build().params());
         }
+
 
         //nn.setMultiLayerNetworkPredictionFilter(input -> mdp.getActionSpace().actionsMask(input));
         nn.setListeners(new ScoreIterationListener(100));
@@ -194,26 +183,34 @@ public class DynDQNMain {
             e.printStackTrace();
         }
 
-        // Training
+    }
+
+
+    public static void train(){
+
         training = true;
-        long startTime = System.nanoTime();
+        long trainingTime = System.nanoTime();
         dql.train();
-        long endTime = System.nanoTime();
-        long trainingTime =(endTime-startTime)/1000000000;
+        trainingTime = (System.nanoTime() - trainingTime)/1000000000;
         Logger.getAnonymousLogger().info("[Time] Total training time (seconds):"+trainingTime);
         training = false;
+    }
 
-        // Evaluation
+
+    public static void evaluate(){
+
         System.out.println("[Play] Starting experiment [iteration: "+ iteration +"] ");
         int EPISODES = 10;
         double rewards = 0;
         for (int i = 0; i < EPISODES; i++) {
             mdp.reset();
-            System.out.println("play policy (episode "+i+")");
+            System.out.println("play policy (episode "+(i+1)+")");
             double reward = dql.getPolicy().play(mdp);
             rewards += reward;
-            Logger.getAnonymousLogger().info("[Evaluate] Reward: " + reward);
+            Logger.getAnonymousLogger().info("[Evaluate] Reward (episode "+(i+1)+"): " + reward);
         }
         Logger.getAnonymousLogger().info("[Evaluate] Average reward: " + rewards / EPISODES);
     }
+
+
 }

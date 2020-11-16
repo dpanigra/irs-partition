@@ -15,12 +15,15 @@ import java.util.stream.Collectors;
 public class Stat<T> {
     @Getter
     private List<Timestamped<T>> history;
+    private List<Double> seconds;
+    private double startTime;
     @Getter
     private BufferedWriter bufferedWriter;
     private FileWriter fileWriter;
 
     public Stat() {
         this.history = new ArrayList<>();
+        this.seconds = new ArrayList<>();
     }
 
     public Stat(String filePath, boolean directory) {
@@ -39,7 +42,7 @@ public class Stat<T> {
 
             if (this.bufferedWriter != null) {
                 try {
-                    this.bufferedWriter.write("Timestamp , Reward\n");
+                    this.bufferedWriter.write("Timestamp, Seconds, Reward\n");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -54,6 +57,12 @@ public class Stat<T> {
         this(filePath, false);
     }
 
+    public Stat(String filePath, long startTime) {
+
+        this(filePath, false);
+        this.startTime = startTime;
+    }
+
     public Stat<T> append(T value) {
         Timestamped<T> t = new Timestamped<>(value);
         this.history.add(t);
@@ -61,6 +70,23 @@ public class Stat<T> {
         if (this.bufferedWriter != null) {
             try {
                 this.bufferedWriter.write(t.getTimestamp() + ", " + t.getValue() + "\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return this;
+    }
+
+    public Stat<T> append(T value, boolean b) {
+        Timestamped<T> t = new Timestamped<>(value);
+        double sec = ((double)System.nanoTime()-this.startTime)/1000000000;
+
+        this.history.add(t);
+        this.seconds.add(sec);
+
+        if (this.bufferedWriter != null) {
+            try {
+                this.bufferedWriter.write(t.getTimestamp() + ", " + sec + ", " + t.getValue() + "\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }
