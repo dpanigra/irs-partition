@@ -146,7 +146,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "20000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "10000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
@@ -155,7 +155,7 @@ public class DynDQNMain {
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                     newMdp.getActionSpace().getSize(),
-                    Integer.parseInt(argsMap.getOrDefault("layers", "4")),
+                    Integer.parseInt(argsMap.getOrDefault("layers", "3")),
                     Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
                     Double.parseDouble(argsMap.getOrDefault("learningRate", "0.001")));
         if(iteration > 0){
