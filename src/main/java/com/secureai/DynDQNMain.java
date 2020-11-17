@@ -156,8 +156,8 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                     newMdp.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "128")),
-                    Double.parseDouble(argsMap.getOrDefault("learningRate", "0.001")));
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
+                    Double.parseDouble(argsMap.getOrDefault("learningRate", "0.01")));
         if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
                     .forLayer(0).transferIn(mdp.getObservationSpace().getMap(), newMdp.getObservationSpace().getMap()) //to use Standard Transfer Learning just use replaceIn or replaceOut
