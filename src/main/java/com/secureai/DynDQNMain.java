@@ -143,10 +143,10 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
-                Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
+                Double.parseDouble(argsMap.getOrDefault("gamma", "0.25")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
-                Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.1")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "0")),      //num step for eps greedy anneal
+                Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "10000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
