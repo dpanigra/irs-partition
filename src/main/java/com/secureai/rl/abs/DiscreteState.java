@@ -70,7 +70,15 @@ public class DiscreteState implements Encodable {
         return result;
     }
 
-    public boolean equals(DiscreteState other) {
+    @Override
+    public boolean equals(Object obj) {
+        DiscreteState other = (DiscreteState) obj;
         return Arrays.equals(this.state, other.state);
+    }
+
+    @Override
+    public int hashCode() {
+        // System.out.println(state.hashCode());
+        return Arrays.hashCode(this.state);
     }
 }
