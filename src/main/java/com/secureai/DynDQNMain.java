@@ -156,7 +156,7 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                     newMdp.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "32")),
                     Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
         if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
