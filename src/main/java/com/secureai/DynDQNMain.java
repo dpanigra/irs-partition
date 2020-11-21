@@ -139,7 +139,7 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
                 Integer.parseInt(argsMap.getOrDefault("maxStep", "250000")),           //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
-                Integer.parseInt(argsMap.getOrDefault("batchSize", "64")),           //size of batches
+                Integer.parseInt(argsMap.getOrDefault("batchSize", "32")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
@@ -156,7 +156,7 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                     newMdp.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "16")),
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
                     Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
         if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
