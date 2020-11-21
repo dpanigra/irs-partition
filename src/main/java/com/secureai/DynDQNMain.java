@@ -140,14 +140,14 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("maxStep", "250000")),           //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
-                Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "10")), //target update (hard)
-                Integer.parseInt(argsMap.getOrDefault("updateStart", "100")),           //num step noop warmup
+                Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
+                Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "10000")),      //num step for eps greedy anneal
-                Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "true"))      //double DQN
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "20000")),      //num step for eps greedy anneal
+                Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
         System.out.println("Q-Learning configuration: "+qlConfiguration.toString());
@@ -156,8 +156,8 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                     newMdp.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
-                    Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "128")),
+                    Double.parseDouble(argsMap.getOrDefault("learningRate", "0.001")));
         if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
                     .forLayer(0).transferIn(mdp.getObservationSpace().getMap(), newMdp.getObservationSpace().getMap()) //to use Standard Transfer Learning just use replaceIn or replaceOut
