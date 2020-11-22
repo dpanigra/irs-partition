@@ -126,8 +126,8 @@ public class DynDQNMain {
 
     public static void setup() {
 
-        String topologyId = "1-vms";
-        String actionSetId = "1-vms";
+        String topologyId = "2-containers";
+        String actionSetId = "2-containers";
 
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
 
@@ -147,7 +147,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
                 Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "10000")),      //num step for eps greedy anneal
-                Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "true"))      //double DQN
+                Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
         System.out.println("Q-Learning configuration: "+qlConfiguration.toString());

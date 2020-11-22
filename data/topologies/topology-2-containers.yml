@@ -2,11 +2,6 @@ id: topology-2-containers
 
 tasks:
   # Classic Api Gateway
-  api-gateway-main:
-    type: api-gateway
-    replication: 1
-    state:
-      - active
 
   # Services
   frontend-service:
@@ -109,13 +104,8 @@ tasks:
       
 connections:
   # First tier
-  api-gateway-main-to-frontend-service:
-    type: http
-    direction: bidirectional
-    from: api-gateway-main
-    to: frontend
 
-  # Second tier
+
   frontend-service-to-ad-service:
     type: proprietary
     direction: bidirectional
@@ -152,7 +142,7 @@ connections:
     from: frontend-service
     to: recomendation-service  
 
-  # Third tier
+  # Second tier
   
   checkout-service-to-email-service:
     type: proprietary

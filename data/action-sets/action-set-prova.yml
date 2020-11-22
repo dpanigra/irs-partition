@@ -29,11 +29,20 @@ actions:
       - frontend-service
       - redis-cache
 
+
   healRedisSecure:
     execution-time: 1000
     execution-cost: 500
     pre-condition: state[active] == true && state[cartCorrupted] == true && state[integrityVulnerability] == false
     post-condition: state[cartCorrupted] = rand(0)
+    components:
+      - redis-cache
+
+  healRedisUnsecure:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[cartCorrupted] == true && state[integrityVulnerability] == true
+    post-condition: state[cartCorrupted] = rand(0.9)
     components:
       - redis-cache
 
