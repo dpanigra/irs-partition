@@ -65,7 +65,7 @@ public class DynDQNMain {
     }
 
     public static void runWithThreshold() {
-        int EPOCH_THRESHOLD = 2000; // After X epochs
+        int EPOCH_THRESHOLD = 1000; // After X epochs
         System.out.println("Entering runWithThreshold()");
         DynDQNMain.setup();
 
@@ -143,7 +143,7 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
-                Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),            //gamma
+                Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
                 Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "20000")),      //num step for eps greedy anneal
@@ -157,7 +157,7 @@ public class DynDQNMain {
                 newMdp.getActionSpace().getSize(),
                 Integer.parseInt(argsMap.getOrDefault("layers", "3")),
                 Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
-                Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
+                Double.parseDouble(argsMap.getOrDefault("learningRate", "0.01")));
         if(iteration > 0){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
                     .forLayer(0).transferIn(mdp.getObservationSpace().getMap(), newMdp.getObservationSpace().getMap()) //to use Standard Transfer Learning just use replaceIn or replaceOut
