@@ -14,6 +14,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
 import org.deeplearning4j.rl4j.learning.IEpochTrainer;
+import org.deeplearning4j.rl4j.learning.listener.TrainingListener;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.network.dqn.DQN;
@@ -39,6 +40,7 @@ public class DynDQNMain {
     static int switches = 0;
     public static Integer iteration = 0;
     public static boolean evaluate = false;
+    public static boolean transferLearning = false;
     public static int maxIterations;
 
     public static boolean training = true;
@@ -52,9 +54,11 @@ public class DynDQNMain {
         argsMap = ArgsUtils.toMap(args);
 
         evaluate = false;
+        transferLearning = false;
 
         runWithThreshold();
         //runWithTimer();
+        //runWithTimerAndThreshold();
 
         for (maxIterations = 1; iteration < maxIterations ; iteration++ ) {
             System.out.println("----------------------");
@@ -66,7 +70,6 @@ public class DynDQNMain {
 
     public static void runWithThreshold() {
         int EPOCH_THRESHOLD = 2000; // After X epochs
-        System.out.println("Entering runWithThreshold()");
         DynDQNMain.setup();
 
         dql.addListener(new EpochEndListener() {
@@ -107,6 +110,43 @@ public class DynDQNMain {
         }, 0, TIMER_THRESHOLD);
     }
 
+    public static void runWithTimerAndThreshold() {
+        int TIMER_THRESHOLD = 120000;//60*60*1000; // in milliseconds
+        int EPOCH_THRESHOLD = 3; // After X epochs
+
+        new Timer(true).schedule(new TimerTask() {
+            @SneakyThrows
+            @Override
+            public void run() {
+                System.out.println("TIMER FIRED");
+                DynDQNMain.stop(() -> {
+                    DynDQNMain.setup();
+
+                    dql.addListener(new EpochEndListener() {
+                        @Override
+                        public TrainingListener.ListenerResponse onEpochTrainingResult(IEpochTrainer iEpochTrainer, StatEntry statEntry) {
+                            if (iEpochTrainer.getEpochCounter() == EPOCH_THRESHOLD) {
+                                System.out.println("THRESHOLD FIRED");
+                                if(evaluate) { evaluate(); }
+                                Timer t = new Timer();
+                                t.schedule(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        DynDQNMain.stop(DynDQNMain::runWithThreshold);
+                                        t.cancel();
+                                    }
+                                }, 3000);
+                            }
+                            return null;
+                        }
+                    });
+                    queue.add(DynDQNMain::train);
+                });
+            }
+        }, 0, TIMER_THRESHOLD);
+    }
+
+
     public static void stop(CallbackUtils.NoArgsCallback callback) {
 
         if (dql != null) {
@@ -134,6 +174,20 @@ public class DynDQNMain {
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
 
+        /*String x;
+        switch (iteration){
+            case 0: x = "0.3";
+                    break;
+            case 1: x = "0.5";
+                break;
+            case 2: x = "0.7";
+                break;
+            case 3: x = "1";
+                break;
+            default:
+                x = "0.1";
+                break;
+        }*/
 
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
@@ -157,10 +211,11 @@ public class DynDQNMain {
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
-                Integer.parseInt(argsMap.getOrDefault("layers", "4")),
+                Integer.parseInt(argsMap.getOrDefault("layers", "2")),
                 Integer.parseInt(argsMap.getOrDefault("hiddenSize", "128")),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
-        if(iteration > 0){
+
+        if(iteration > 0 && transferLearning){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
                     .forLayer(0).transferIn(mdp.getObservationSpace().getMap(), newMdp.getObservationSpace().getMap()) //to use Standard Transfer Learning just use replaceIn or replaceOut
                     .forLayer(-1).transferOut(mdp.getActionSpace().getMap(), newMdp.getActionSpace().getMap())
