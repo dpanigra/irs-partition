@@ -55,15 +55,15 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = false;
+        maxIterations = 1;
 
         runWithThreshold();
         //runWithTimer();
         //runWithTimerAndThreshold();
 
-        for (maxIterations = 1; iteration < maxIterations ; iteration++ ) {
-            System.out.println("----------------------");
+        while( iteration < maxIterations ) {
+            iteration++;
             System.out.println("Iteration " + iteration);
-            System.out.println("----------------------");
             queue.take().run();
         }
     }
@@ -97,6 +97,7 @@ public class DynDQNMain {
     public static void runWithTimer() {
         int TIMER_THRESHOLD = 180000; // After 0s and period 15s
 
+
         new Timer(true).schedule(new TimerTask() {
             @SneakyThrows
             @Override
@@ -111,8 +112,7 @@ public class DynDQNMain {
     }
 
     public static void runWithTimerAndThreshold() {
-        int TIMER_THRESHOLD = 120000;//60*60*1000; // in milliseconds
-        int EPOCH_THRESHOLD = 3; // After X epochs
+        int TIMER_THRESHOLD = 60000;//60*60*1000; // in milliseconds
 
         new Timer(true).schedule(new TimerTask() {
             @SneakyThrows
@@ -120,27 +120,7 @@ public class DynDQNMain {
             public void run() {
                 System.out.println("TIMER FIRED");
                 DynDQNMain.stop(() -> {
-                    DynDQNMain.setup();
-
-                    dql.addListener(new EpochEndListener() {
-                        @Override
-                        public TrainingListener.ListenerResponse onEpochTrainingResult(IEpochTrainer iEpochTrainer, StatEntry statEntry) {
-                            if (iEpochTrainer.getEpochCounter() == EPOCH_THRESHOLD) {
-                                System.out.println("THRESHOLD FIRED");
-                                if(evaluate) { evaluate(); }
-                                Timer t = new Timer();
-                                t.schedule(new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        DynDQNMain.stop(DynDQNMain::runWithThreshold);
-                                        t.cancel();
-                                    }
-                                }, 3000);
-                            }
-                            return null;
-                        }
-                    });
-                    queue.add(DynDQNMain::train);
+                    runWithThreshold();
                 });
             }
         }, 0, TIMER_THRESHOLD);
@@ -174,20 +154,20 @@ public class DynDQNMain {
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
 
-        /*String x;
+        String x;
         switch (iteration){
-            case 0: x = "0.3";
+            case 0: x = "0.1";
                     break;
-            case 1: x = "0.5";
+            case 1: x = "0.2";
                 break;
-            case 2: x = "0.7";
+            case 2: x = "0.3";
                 break;
-            case 3: x = "1";
+            case 3: x = "0.4";
                 break;
             default:
-                x = "0.1";
+                x = "1";
                 break;
-        }*/
+        }
 
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
@@ -198,7 +178,7 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "256")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
-                Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
+                Double.parseDouble(argsMap.getOrDefault("rewardFactor", x)),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
@@ -211,7 +191,7 @@ public class DynDQNMain {
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
-                Integer.parseInt(argsMap.getOrDefault("layers", "1")),
+                Integer.parseInt(argsMap.getOrDefault("layers", "3")),
                 Integer.parseInt(argsMap.getOrDefault("hiddenSize", "128")),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
 
