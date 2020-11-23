@@ -65,11 +65,13 @@ public class DynDQNMain {
             iteration++;
             System.out.println("Iteration " + iteration);
             queue.take().run();
+
         }
     }
 
     public static void runWithThreshold() {
         int EPOCH_THRESHOLD = 2000; // After X epochs
+
         DynDQNMain.setup();
 
         dql.addListener(new EpochEndListener() {
@@ -112,7 +114,7 @@ public class DynDQNMain {
     }
 
     public static void runWithTimerAndThreshold() {
-        int TIMER_THRESHOLD = 60000;//60*60*1000; // in milliseconds
+        int TIMER_THRESHOLD = 600000;//60*60*1000; // in milliseconds
 
         new Timer(true).schedule(new TimerTask() {
             @SneakyThrows
@@ -145,6 +147,7 @@ public class DynDQNMain {
 
     public static void setup() {
 
+
         String topologyId = "2-containers";
         String actionSetId = "2-containers";
 
@@ -153,19 +156,21 @@ public class DynDQNMain {
         Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", topologyId), Topology.class);
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
-/*
-        String x;
+
+        /*String x;
         switch (iteration){
-            case 0: x = "0.1";
+            case 0: x = "10";
                     break;
-            case 1: x = "0.2";
+            case 1: x = "11";
                 break;
-            case 2: x = "0.3";
+            case 2: x = "12";
                 break;
-            case 3: x = "0.4";
+            case 3: x = "13";
+                break;
+            case 4: x = "14";
                 break;
             default:
-                x = "1";
+                x = "1234";
                 break;
         }*/
 
@@ -191,8 +196,8 @@ public class DynDQNMain {
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
-                Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "128")),
+                Integer.parseInt(argsMap.getOrDefault("layers", "2")),
+                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
 
         if(iteration > 0 && transferLearning){
