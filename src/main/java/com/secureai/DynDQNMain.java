@@ -65,7 +65,7 @@ public class DynDQNMain {
     }
 
     public static void runWithThreshold() {
-        int EPOCH_THRESHOLD = 1000; // After X epochs
+        int EPOCH_THRESHOLD = 2000; // After X epochs
         System.out.println("Entering runWithThreshold()");
         DynDQNMain.setup();
 
@@ -133,6 +133,9 @@ public class DynDQNMain {
         Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", topologyId), Topology.class);
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
+
+
+
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
@@ -154,7 +157,7 @@ public class DynDQNMain {
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
-                Integer.parseInt(argsMap.getOrDefault("layers", "3")),
+                Integer.parseInt(argsMap.getOrDefault("layers", "4")),
                 Integer.parseInt(argsMap.getOrDefault("hiddenSize", "128")),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
         if(iteration > 0){
