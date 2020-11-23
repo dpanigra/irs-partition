@@ -153,7 +153,7 @@ public class DynDQNMain {
         Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", topologyId), Topology.class);
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
-
+/*
         String x;
         switch (iteration){
             case 0: x = "0.1";
@@ -167,7 +167,7 @@ public class DynDQNMain {
             default:
                 x = "1";
                 break;
-        }
+        }*/
 
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
@@ -178,7 +178,7 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "256")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
-                Double.parseDouble(argsMap.getOrDefault("rewardFactor", x)),        //reward scaling
+                Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
