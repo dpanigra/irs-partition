@@ -28,6 +28,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class DynDQNMain {
@@ -55,15 +56,16 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = false;
-        maxIterations = 1;
+        maxIterations = 2;
 
-        runWithThreshold();
+        //runWithThreshold();
         //runWithTimer();
-        //runWithTimerAndThreshold();
+        runWithTimerAndThreshold();
+        TimeUnit.SECONDS.sleep(3);
 
         while( iteration < maxIterations ) {
-            iteration++;
             System.out.println("Iteration " + iteration);
+            iteration++;
             queue.take().run();
 
         }
@@ -114,7 +116,7 @@ public class DynDQNMain {
     }
 
     public static void runWithTimerAndThreshold() {
-        int TIMER_THRESHOLD = 600000;//60*60*1000; // in milliseconds
+        int TIMER_THRESHOLD = 60*60*1000; // in milliseconds
 
         new Timer(true).schedule(new TimerTask() {
             @SneakyThrows
@@ -147,7 +149,6 @@ public class DynDQNMain {
 
     public static void setup() {
 
-
         String topologyId = "2-containers";
         String actionSetId = "2-containers";
 
@@ -157,22 +158,25 @@ public class DynDQNMain {
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
 
-        /*String x;
+        String x, y;
         switch (iteration){
-            case 0: x = "10";
+            case 0: x = "2";
+                    y = "100";
                     break;
-            case 1: x = "11";
+            case 1: x = "3";
+                    y = "86";
                 break;
-            case 2: x = "12";
+        /*    case 2: x = "12";
                 break;
             case 3: x = "13";
                 break;
             case 4: x = "14";
-                break;
+                break;*/
             default:
-                x = "1234";
+                x = "1";
+                y = "64";
                 break;
-        }*/
+        }
 
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
@@ -196,8 +200,8 @@ public class DynDQNMain {
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
-                Integer.parseInt(argsMap.getOrDefault("layers", "2")),
-                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
+                Integer.parseInt(argsMap.getOrDefault("layers", x)),
+                Integer.parseInt(argsMap.getOrDefault("hiddenSize", y)),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
 
         if(iteration > 0 && transferLearning){
