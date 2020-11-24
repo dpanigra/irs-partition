@@ -56,11 +56,11 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = false;
-        maxIterations = 2;
+        maxIterations = 1;
 
-        //runWithThreshold();
+        runWithThreshold();
         //runWithTimer();
-        runWithTimerAndThreshold();
+        //runWithTimerAndThreshold();
         TimeUnit.SECONDS.sleep(3);
 
         while( iteration < maxIterations ) {
@@ -116,7 +116,7 @@ public class DynDQNMain {
     }
 
     public static void runWithTimerAndThreshold() {
-        int TIMER_THRESHOLD = 60*60*1000; // in milliseconds
+        int TIMER_THRESHOLD = 60* 60*1000; // in milliseconds
 
         new Timer(true).schedule(new TimerTask() {
             @SneakyThrows
@@ -157,7 +157,7 @@ public class DynDQNMain {
         Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", topologyId), Topology.class);
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
-
+        /*
         String x, y;
         switch (iteration){
             case 0: x = "2";
@@ -166,17 +166,17 @@ public class DynDQNMain {
             case 1: x = "3";
                     y = "86";
                 break;
-        /*    case 2: x = "12";
+            case 2: x = "12";
                 break;
             case 3: x = "13";
                 break;
             case 4: x = "14";
-                break;*/
+                break;
             default:
                 x = "1";
                 y = "64";
                 break;
-        }
+        }*/
 
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
@@ -200,8 +200,8 @@ public class DynDQNMain {
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
-                Integer.parseInt(argsMap.getOrDefault("layers", x)),
-                Integer.parseInt(argsMap.getOrDefault("hiddenSize", y)),
+                Integer.parseInt(argsMap.getOrDefault("layers", "3")),
+                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "86")),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
 
         if(iteration > 0 && transferLearning){
