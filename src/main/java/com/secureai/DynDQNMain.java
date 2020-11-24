@@ -56,7 +56,7 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = false;
-        maxIterations = 1;
+        maxIterations = 4;
 
         runWithThreshold();
         //runWithTimer();
@@ -157,26 +157,21 @@ public class DynDQNMain {
         Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", topologyId), Topology.class);
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", actionSetId), ActionSet.class);
 
-        /*
+
         String x, y;
         switch (iteration){
-            case 0: x = "2";
-                    y = "100";
+            case 0: x = "100";
                     break;
-            case 1: x = "3";
-                    y = "86";
+            case 1: x = "150";
                 break;
-            case 2: x = "12";
+            case 2: x = "200";
                 break;
-            case 3: x = "13";
-                break;
-            case 4: x = "14";
+            case 3: x = "256";
                 break;
             default:
-                x = "1";
-                y = "64";
+                x = "64";
                 break;
-        }*/
+        }
 
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
@@ -200,8 +195,8 @@ public class DynDQNMain {
         SystemEnvironment newMdp = new SystemEnvironment(topology, actionSet);
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
-                Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "86")),
+                Integer.parseInt(argsMap.getOrDefault("layers", "1")),
+                Integer.parseInt(argsMap.getOrDefault("hiddenSize", x)),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
 
         if(iteration > 0 && transferLearning){
