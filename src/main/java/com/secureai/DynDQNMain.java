@@ -160,12 +160,12 @@ public class DynDQNMain {
 
         String x, y;
         switch (iteration){
-            case 0: x = "0.0005";
+            case 0: x = "60000";
                     break;
-            case 1: x = "0.00005";
+            case 1: x = "40000";
                 break;
             default:
-                x = "64";
+                x = "70000";
                 break;
         }
 
@@ -182,7 +182,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "50000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", x)),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
@@ -193,7 +193,7 @@ public class DynDQNMain {
                 newMdp.getActionSpace().getSize(),
                 Integer.parseInt(argsMap.getOrDefault("layers", "1")),
                 Integer.parseInt(argsMap.getOrDefault("hiddenSize", "150")),
-                Double.parseDouble(argsMap.getOrDefault("learningRate", x)));
+                Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
 
         if(iteration > 0 && transferLearning){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
