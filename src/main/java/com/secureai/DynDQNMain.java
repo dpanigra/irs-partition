@@ -56,7 +56,7 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = false;
-        maxIterations = 3;
+        maxIterations = 2;
 
         runWithThreshold();
         //runWithTimer();
@@ -160,11 +160,9 @@ public class DynDQNMain {
 
         String x, y;
         switch (iteration){
-            case 0: x = "0.001";
+            case 0: x = "0.0005";
                     break;
-            case 1: x = "0.00001";
-                break;
-            case 2: x = "0.000001";
+            case 1: x = "0.00005";
                 break;
             default:
                 x = "64";
