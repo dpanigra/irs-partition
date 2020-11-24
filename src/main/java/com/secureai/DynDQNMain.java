@@ -56,7 +56,7 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = false;
-        maxIterations = 4;
+        maxIterations = 3;
 
         runWithThreshold();
         //runWithTimer();
@@ -160,13 +160,11 @@ public class DynDQNMain {
 
         String x, y;
         switch (iteration){
-            case 0: x = "100";
+            case 0: x = "0.001";
                     break;
-            case 1: x = "150";
+            case 1: x = "0.00001";
                 break;
-            case 2: x = "200";
-                break;
-            case 3: x = "256";
+            case 2: x = "0.000001";
                 break;
             default:
                 x = "64";
@@ -196,8 +194,8 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
                 Integer.parseInt(argsMap.getOrDefault("layers", "1")),
-                Integer.parseInt(argsMap.getOrDefault("hiddenSize", x)),
-                Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
+                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "150")),
+                Double.parseDouble(argsMap.getOrDefault("learningRate", x)));
 
         if(iteration > 0 && transferLearning){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
