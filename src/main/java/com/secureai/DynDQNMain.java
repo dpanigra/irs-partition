@@ -160,12 +160,16 @@ public class DynDQNMain {
 
         String x, y;
         switch (iteration){
-            case 0: x = "60000";
+            case 0: x = "0.25";
                     break;
-            case 1: x = "40000";
+            case 1: x = "0.5";
+                break;
+            case 2: x = "0.75";
+                break;
+            case 3: x = "1";
                 break;
             default:
-                x = "70000";
+                x = "1";
                 break;
         }
 
@@ -182,7 +186,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "40000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "30000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
