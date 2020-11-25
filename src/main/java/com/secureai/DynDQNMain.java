@@ -54,7 +54,7 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = false;
-        maxIterations = 4;
+        maxIterations = 3;
 
         runWithThreshold();
         //runWithTimer();
@@ -144,16 +144,17 @@ public class DynDQNMain {
 
         String x, y;
         switch (iteration){
-            case 0: x = "1000";
+            case 0: x = "5000";
                     break;
-            case 1: x = "2000";
+            case 1: x = "20000";
                 break;
-            case 2: x = "5000";
+            case 2: x = "50000";
                 break;
-            case 3: x = "10000";
+
+            case 3: x = "1000";
                 break;
             default:
-                x = "1";
+                x = "1000";
                 break;
         }
 
@@ -162,10 +163,10 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
                 Integer.parseInt(argsMap.getOrDefault("maxStep", "250000")),           //Max step
-                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "10000")),      //Max size of experience replay
+                Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", x)),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
-                Integer.parseInt(argsMap.getOrDefault("updateStart", x)),           //num step noop warmup
+                Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "0.75")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
