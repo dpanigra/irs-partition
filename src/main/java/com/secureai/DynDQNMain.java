@@ -26,9 +26,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 public class DynDQNMain {
@@ -56,12 +54,13 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = false;
-        maxIterations = 4;
+        maxIterations = 3;
 
         runWithThreshold();
         //runWithTimer();
-        //runWithTimerAndThreshold();
+
         TimeUnit.SECONDS.sleep(3);
+
 
         while( iteration < maxIterations ) {
             System.out.println("Iteration " + iteration);
@@ -115,21 +114,6 @@ public class DynDQNMain {
         }, 0, TIMER_THRESHOLD);
     }
 
-    public static void runWithTimerAndThreshold() {
-        int TIMER_THRESHOLD = 60* 60*1000; // in milliseconds
-
-        new Timer(true).schedule(new TimerTask() {
-            @SneakyThrows
-            @Override
-            public void run() {
-                System.out.println("TIMER FIRED");
-                DynDQNMain.stop(() -> {
-                    runWithThreshold();
-                });
-            }
-        }, 0, TIMER_THRESHOLD);
-    }
-
 
     public static void stop(CallbackUtils.NoArgsCallback callback) {
 
@@ -160,13 +144,11 @@ public class DynDQNMain {
 
         String x, y;
         switch (iteration){
-            case 0: x = "0.25";
+            case 0: x = "512";
                     break;
-            case 1: x = "0.5";
+            case 1: x = "128";
                 break;
-            case 2: x = "0.75";
-                break;
-            case 3: x = "1";
+            case 2: x = "64";
                 break;
             default:
                 x = "1";
@@ -179,10 +161,10 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
                 Integer.parseInt(argsMap.getOrDefault("maxStep", "250000")),           //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "10000")),      //Max size of experience replay
-                Integer.parseInt(argsMap.getOrDefault("batchSize", "256")),           //size of batches
+                Integer.parseInt(argsMap.getOrDefault("batchSize", x)),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
-                Double.parseDouble(argsMap.getOrDefault("rewardFactor", x)),        //reward scaling
+                Double.parseDouble(argsMap.getOrDefault("rewardFactor", "0.75")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
