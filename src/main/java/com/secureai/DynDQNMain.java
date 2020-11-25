@@ -144,11 +144,11 @@ public class DynDQNMain {
 
         String x, y;
         switch (iteration){
-            case 0: x = "10";
+            case 0: x = "1000";
                     break;
-            case 1: x = "100";
+            case 1: x = "2000";
                 break;
-            case 2: x = "1000";
+            case 2: x = "5000";
                 break;
             case 3: x = "10000";
                 break;
@@ -164,8 +164,8 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("maxStep", "250000")),           //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "10000")),      //Max size of experience replay
                 Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
-                Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", x)), //target update (hard)
-                Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
+                Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
+                Integer.parseInt(argsMap.getOrDefault("updateStart", x)),           //num step noop warmup
                 Double.parseDouble(argsMap.getOrDefault("rewardFactor", "0.75")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
