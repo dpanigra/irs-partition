@@ -53,8 +53,8 @@ public class DynDQNMain {
         argsMap = ArgsUtils.toMap(args);
 
         evaluate = false;
-        transferLearning = false;
-        maxIterations = 1;
+        transferLearning = true;
+        maxIterations = 2;
 
         runWithThreshold();
         //runWithTimer();
@@ -144,9 +144,9 @@ public class DynDQNMain {
 
         String x, y;
         switch (iteration){
-            case 0: x = "5000";
+            case 0: x = "30000";
                     break;
-            case 1: x = "20000";
+            case 1: x = "15000";
                 break;
             case 2: x = "50000";
                 break;
@@ -171,7 +171,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "30000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", x)),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
