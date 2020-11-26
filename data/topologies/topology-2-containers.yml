@@ -6,7 +6,7 @@ tasks:
   # Services
   frontend-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted
@@ -14,7 +14,7 @@ tasks:
       - shellCorrupted
   cart-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted
@@ -22,7 +22,7 @@ tasks:
       - shellCorrupted
   recomendation-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted
@@ -30,7 +30,7 @@ tasks:
       - shellCorrupted
   product-catalog-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted
@@ -38,7 +38,7 @@ tasks:
       - shellCorrupted
   checkout-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted
@@ -46,7 +46,7 @@ tasks:
       - shellCorrupted
   ad-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted
@@ -54,7 +54,7 @@ tasks:
       - shellCorrupted
   email-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted
@@ -62,7 +62,7 @@ tasks:
       - shellCorrupted
   payment-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted
@@ -70,7 +70,7 @@ tasks:
       - shellCorrupted
   shiping-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted
@@ -78,7 +78,7 @@ tasks:
       - shellCorrupted
   currency-service:
     type: image
-    replication: 2
+    replication: 1
     state:
       - active
       - restarted

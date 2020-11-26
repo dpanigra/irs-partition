@@ -36,13 +36,12 @@ public class DynDQNMain {
     static MultiLayerNetwork nn = null;
     static SystemEnvironment mdp = null;
     static Map<String, String> argsMap;
-    static int switches = 0;
-    public static Integer iteration = 0;
-    public static boolean evaluate = false;
-    public static boolean transferLearning = false;
-    public static int maxIterations;
 
-    public static boolean training = true;
+    public static Integer iteration = 0; // iteration counter
+    public static boolean evaluate = false; // if true perform evaluation at the end of each training
+    public static boolean transferLearning = false; // if true new NN will be initialized from previous one
+    public static int maxIterations; // Total number of test iterations
+    public static boolean training = true; // true if the process is currently during training (used for console output purposes)
 
     public static void main(String... args) throws InterruptedException {
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
@@ -54,12 +53,12 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = true;
-        maxIterations = 1;
+        maxIterations = 6;
 
         runWithThreshold();
         //runWithTimer();
 
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(3); // Dummy way to synchronize threads
 
 
         while( iteration < maxIterations ) {
@@ -71,7 +70,7 @@ public class DynDQNMain {
     }
 
     public static void runWithThreshold() {
-        int EPOCH_THRESHOLD = 2000; // After X epochs
+        int EPOCH_THRESHOLD = 1000; // After X epochs
 
         DynDQNMain.setup();
 
@@ -143,22 +142,53 @@ public class DynDQNMain {
 
 
         String x, y;
-        switch (iteration){
+       /* switch (iteration){
             case 0: x = "30000";
                     break;
             case 1: x = "15000";
                     topology.getTasks().get("frontend-service").setReplication(2);
+                    topology.getTasks().get("frontend-service").setReplication(2);
                     break;
-            case 2: x = "50000";
+            case 2: x = "15000";
                 break;
 
-            case 3: x = "1000";
+            case 3: x = "15000";
+                break;
+            case 4: x = "15000";
                 break;
             default:
-                x = "1000";
+                x = "30000";
                 break;
-        }
+        }*/
 
+        //---------------------------------------------------------------------------------
+        // Transfer learning increasing replicas stress test
+        if(iteration == 0)
+            x = "30000";
+        else
+            x = "15000";
+
+        if(iteration > 0){
+            topology.getTasks().get("frontend-service").setReplication(2);
+            topology.getTasks().get("cart-service").setReplication(2);
+        }
+        if(iteration > 1){
+            topology.getTasks().get("recomendation-service").setReplication(2);
+            topology.getTasks().get("product-catalog-service").setReplication(2);
+        }
+        if(iteration > 2){
+            topology.getTasks().get("checkout-service").setReplication(2);
+            topology.getTasks().get("ad-service").setReplication(2);
+        }
+        if(iteration > 3){
+            topology.getTasks().get("email-service").setReplication(2);
+            topology.getTasks().get("payment-service").setReplication(2);
+        }
+        if(iteration > 4){
+            topology.getTasks().get("shiping-service").setReplication(2);
+            topology.getTasks().get("currency-service").setReplication(2);
+        }
+        //---------------------------------------------------------------------------------
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
@@ -172,7 +202,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "60000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", x)),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
