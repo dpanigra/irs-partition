@@ -53,7 +53,7 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = true;
-        maxIterations = 1;
+        maxIterations = 6;
 
         runWithThreshold();
         //runWithTimer();
@@ -70,7 +70,7 @@ public class DynDQNMain {
     }
 
     public static void runWithThreshold() {
-        int EPOCH_THRESHOLD = 6000; // After X epochs
+        int EPOCH_THRESHOLD = 1000; // After X epochs
 
         DynDQNMain.setup();
 
@@ -160,7 +160,7 @@ public class DynDQNMain {
                 x = "30000";
                 break;
         }*/
-/*
+
         //---------------------------------------------------------------------------------
         // Transfer learning increasing replicas stress test
         if(iteration == 0)
@@ -189,7 +189,7 @@ public class DynDQNMain {
             topology.getTasks().get("currency-service").setReplication(2);
         }
         //---------------------------------------------------------------------------------
-*/
+
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
@@ -202,7 +202,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "100000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "30000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
