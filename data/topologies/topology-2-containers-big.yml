@@ -1,0 +1,191 @@
+id: topology-2-containers
+
+tasks:
+  # Classic Api Gateway
+
+  # Services
+  frontend-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  cart-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  recomendation-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  product-catalog-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  checkout-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  ad-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  email-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  payment-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  shiping-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  currency-service:
+    type: image
+    replication: 2
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+
+
+  # Databases
+  redis-cache:
+    type: database
+    replication: 1
+    state:
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+      - cartCorrupted
+      - confidentialityVulnerability
+      - integrityVulnerability
+      - passwordRequired
+      - dangerousCmdEnabled
+      - accessRestricted
+      
+connections:
+  # First tier
+
+
+  frontend-service-to-ad-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: ad-service
+  frontend-service-to-checkout-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: checkout-service
+  frontend-service-to-currency-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: currency-service
+  frontend-service-to-shipping-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: shipping-service
+  frontend-service-to-product-catalog-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: product-catalog-service
+  frontend-service-to-cart-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: cart-service
+  frontend-service-to-recomendation-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: recomendation-service  
+
+  # Second tier
+  
+  checkout-service-to-email-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: email-service
+  checkout-service-to-payment-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: payment-service
+  checkout-service-to-shipping-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: shipping-service
+  checkout-service-to-currency-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: currency-service
+  checkout-service-to-product-catalog-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: product-catalog-service
+  checkout-service-to-cart-service:
+    type: proprietary
+    direction: bidirectional
+    from: checkout-service
+    to: cart-service
+  recomendation-service-to-product-catalog-service:
+    type: proprietary
+    direction: bidirectional
+    from: recomendation-service
+    to: product-catalog-service
+  cart-service-to-redis-cache:
+    type: proprietary
+    direction: bidirectional
+    from: cart-service
+    to: redis-cache
+  
+  
+  
+  
+  

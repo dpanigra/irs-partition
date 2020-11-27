@@ -53,7 +53,7 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = true;
-        maxIterations = 6;
+        maxIterations = 1;
 
         runWithThreshold();
         //runWithTimer();
@@ -70,7 +70,7 @@ public class DynDQNMain {
     }
 
     public static void runWithThreshold() {
-        int EPOCH_THRESHOLD = 1000; // After X epochs
+        int EPOCH_THRESHOLD = 6000; // After X epochs
 
         DynDQNMain.setup();
 
@@ -132,7 +132,7 @@ public class DynDQNMain {
 
     public static void setup() {
 
-        String topologyId = "2-containers";
+        String topologyId = "2-containers-big";
         String actionSetId = "2-containers";
 
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
@@ -163,7 +163,7 @@ public class DynDQNMain {
 
         //---------------------------------------------------------------------------------
         // Transfer learning increasing replicas stress test
-        if(iteration == 0)
+        /*if(iteration == 0)
             x = "30000";
         else
             x = "15000";
@@ -187,7 +187,7 @@ public class DynDQNMain {
         if(iteration > 4){
             topology.getTasks().get("shiping-service").setReplication(2);
             topology.getTasks().get("currency-service").setReplication(2);
-        }
+        }*/
         //---------------------------------------------------------------------------------
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
@@ -202,7 +202,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "30000")),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "180000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
