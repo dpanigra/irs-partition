@@ -56,8 +56,8 @@ public class SystemState extends DiscreteState {
 
     public void worst() {
         this.environment.getSystemDefinition().getResources().forEach(resourceId -> {
-/*
-            // Model 1 VMs
+
+         // Model 1 VMs
             this.set(resourceId, State.active, false);
             this.set(resourceId, State.firewallBlockICMP, false);
             this.set(resourceId, State.firewallSoftBandwidthLimit, false);
@@ -69,9 +69,9 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.dockerRuncUpgradable, true);
             this.set(resourceId, State.dockerExecAvailable, true);
             this.set(resourceId, State.containerCorrupted, true);
-*/
-            //-------------------------------------------------------------------------------------
 
+            //-------------------------------------------------------------------------------------
+/*
             // Model 2 containers
             this.set(resourceId, State.active, false);
             this.set(resourceId, State.restarted, false);
@@ -83,7 +83,7 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.passwordRequired, false);
             this.set(resourceId, State.dangerousCmdEnabled, true);
             this.set(resourceId, State.accessRestricted, false);
-
+*/
         });
     }
 
