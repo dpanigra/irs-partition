@@ -53,7 +53,7 @@ public class DynDQNMain {
 
         evaluate = false;
         transferLearning = true;
-        maxIterations = 1;
+        maxIterations = 2;
 
         runWithThreshold();
         //runWithTimer();
@@ -145,12 +145,12 @@ public class DynDQNMain {
 
 
         String x, y;
-       /* switch (iteration){
+        switch (iteration){
             case 0: x = "30000";
                     break;
             case 1: x = "15000";
                     topology.getTasks().get("frontend-service").setReplication(2);
-                    topology.getTasks().get("frontend-service").setReplication(2);
+                    //topology.getTasks().get("frontend-service").setReplication(2);
                     break;
             case 2: x = "15000";
                 break;
@@ -198,14 +198,14 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),       //Max step By epoch
                 Integer.parseInt(argsMap.getOrDefault("maxStep", "250000")),           //Max step
                 Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "10000")),      //Max size of experience replay
-                Integer.parseInt(argsMap.getOrDefault("batchSize", "256")),           //size of batches
+                Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
                 Integer.parseInt(argsMap.getOrDefault("targetDqnUpdateFreq", "500")), //target update (hard)
                 Integer.parseInt(argsMap.getOrDefault("updateStart", "0")),           //num step noop warmup
-                Double.parseDouble(argsMap.getOrDefault("rewardFactor", "1")),        //reward scaling
+                Double.parseDouble(argsMap.getOrDefault("rewardFactor", "0.75")),        //reward scaling
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "50000")),     //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", x)),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
@@ -216,7 +216,7 @@ public class DynDQNMain {
                 newMdp.getActionSpace().getSize(),
                 Integer.parseInt(argsMap.getOrDefault("layers", "1")),
                 Integer.parseInt(argsMap.getOrDefault("hiddenSize", "150")),
-                Double.parseDouble(argsMap.getOrDefault("learningRate", "0.00005")));
+                Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
 
         if(iteration > 0 && transferLearning){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
