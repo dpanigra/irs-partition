@@ -137,10 +137,10 @@ public class DynDQNMain {
 
     public static void setup() {
 
-        //String topologyId = "2-containers";
-        //String actionSetId = "2-containers";
-        String topologyId = "1-vms";
-        String actionSetId = "1-vms";
+        String topologyId = "2-containers";
+        String actionSetId = "2-containers";
+        //String topologyId = "1-vms";
+        //String actionSetId = "1-vms";
 
 
         System.out.println(String.format("[Dyn] Choosing topology '%s' with action set '%s'", topologyId, actionSetId));
