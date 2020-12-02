@@ -75,7 +75,7 @@ public class DynDQNMain {
     }
 
     public static void runWithThreshold() {
-        int EPOCH_THRESHOLD = 4000; // After X epochs
+        int EPOCH_THRESHOLD = 2000; // After X epochs
 
         DynDQNMain.setup();
 
