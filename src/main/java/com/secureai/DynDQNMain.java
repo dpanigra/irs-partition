@@ -43,6 +43,9 @@ public class DynDQNMain {
     public static int maxIterations; // Total number of test iterations
     public static boolean training = true; // true if the process is currently during training (used for console output purposes)
 
+
+    public static boolean random = false;
+
     public static void main(String... args) throws InterruptedException {
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
         System.setProperty("org.bytedeco.javacpp.maxbytes", "0");
@@ -51,15 +54,17 @@ public class DynDQNMain {
 
         argsMap = ArgsUtils.toMap(args);
 
+        // Test configuration ---------
         evaluate = false;
         transferLearning = true;
         maxIterations = 2;
 
         runWithThreshold();
         //runWithTimer();
+        //-----------------------------
+
 
         TimeUnit.SECONDS.sleep(3); // Dummy way to synchronize threads
-
 
         while( iteration < maxIterations ) {
             System.out.println("Iteration " + iteration);
@@ -70,7 +75,7 @@ public class DynDQNMain {
     }
 
     public static void runWithThreshold() {
-        int EPOCH_THRESHOLD = 2000; // After X epochs
+        int EPOCH_THRESHOLD = 4000; // After X epochs
 
         DynDQNMain.setup();
 
@@ -147,10 +152,10 @@ public class DynDQNMain {
         String x, y;
         switch (iteration){
             case 0: x = "30000";
-                    break;
-            case 1: x = "15000";
                     topology.getTasks().get("frontend-service").setReplication(2);
-                    //topology.getTasks().get("frontend-service").setReplication(2);
+                    break;
+            case 1: x = "30000";
+                    //random = true;
                     break;
             case 2: x = "15000";
                 break;

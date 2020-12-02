@@ -1,9 +1,11 @@
 package com.secureai.system;
 
+import com.secureai.DynDQNMain;
 import com.secureai.rl.abs.DiscreteState;
 import com.secureai.utils.RandomUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import com.secureai.model.stateset.State;
+import spire.algebra.Bool;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -20,37 +22,34 @@ public class SystemState extends DiscreteState {
     @Override
     public void reset() {
         super.reset();
-        this.worst();
-    }
-
-    public void reset(boolean rnd) {
-        super.reset();
-
-        if(rnd)
-            this.random();
-        else
+        if(DynDQNMain.random == false)
             this.worst();
+        else
+            this.random();
     }
-
-
 
     public void random() {
         this.environment.getSystemDefinition().getResources().forEach(resourceId -> {
             // Model 1 VMs
 
             //-------------------------------------------------------------------------------------
-/*
+
             // Model 2 containers
             this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.restarted, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.corrupted, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.shellCorrupted, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.cartCorrupted, true);
-            this.set(resourceId, State.confidentialityVulnerability, true);
-            this.set(resourceId, State.integrityVulnerability, true);
-            this.set(resourceId, State.passwordRequired, false);
-            this.set(resourceId, State.dangerousCmdEnabled, true);
-            this.set(resourceId, State.accessRestricted, false);*/
+            this.set(resourceId, State.cartCorrupted, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.confidentialityVulnerability, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.integrityVulnerability, RandomUtils.getRandom().nextDouble() < 0.5);
+            Boolean integrity = this.get(resourceId, State.integrityVulnerability);
+            Boolean confidentiality = this.get(resourceId, State.confidentialityVulnerability);
+            if(integrity != null && confidentiality != null && (integrity || confidentiality))
+                this.set(resourceId, State.passwordRequired, false);
+            else
+                this.set(resourceId, State.passwordRequired, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.dangerousCmdEnabled, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.accessRestricted, RandomUtils.getRandom().nextDouble() < 0.5);
         });
     }
 
