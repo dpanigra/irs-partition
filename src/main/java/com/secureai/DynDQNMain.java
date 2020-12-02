@@ -57,7 +57,7 @@ public class DynDQNMain {
         // Test configuration ---------
         evaluate = false;
         transferLearning = true;
-        maxIterations = 2;
+        maxIterations = 1;
 
         runWithThreshold();
         //runWithTimer();
@@ -137,7 +137,7 @@ public class DynDQNMain {
 
     public static void setup() {
 
-        String topologyId = "2-containers";
+        String topologyId = "2-containers-big";
         String actionSetId = "2-containers";
         //String topologyId = "1-vms";
         //String actionSetId = "1-vms";
@@ -210,7 +210,7 @@ public class DynDQNMain {
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.9")),            //gamma
                 Double.parseDouble(argsMap.getOrDefault("errorClamp", "0.5")),        //td-error clipping
                 Float.parseFloat(argsMap.getOrDefault("minEpsilon", "0.01")),         //min epsilon
-                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", x)),      //num step for eps greedy anneal
+                Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "30000")),      //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
 
