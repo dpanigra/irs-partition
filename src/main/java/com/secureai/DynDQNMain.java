@@ -154,7 +154,7 @@ public class DynDQNMain {
             case 0: x = "30000";
                     topology.getTasks().get("frontend-service").setReplication(2);
                     break;
-            case 1: x = "30000";
+            case 1: x = "15000";
                     //random = true;
                     break;
             case 2: x = "15000";
