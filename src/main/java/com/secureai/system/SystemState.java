@@ -58,7 +58,7 @@ public class SystemState extends DiscreteState {
 
             // Model 2 containers
             this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.restarted, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.restarted, false);
             this.set(resourceId, State.corrupted, true);
             this.set(resourceId, State.shellCorrupted, true);
             this.set(resourceId, State.cartCorrupted, true);
@@ -69,9 +69,9 @@ public class SystemState extends DiscreteState {
             if(integrity != null && confidentiality != null && (integrity || confidentiality))
                 this.set(resourceId, State.passwordRequired, false);
             else
-                this.set(resourceId, State.passwordRequired, false);
-            this.set(resourceId, State.dangerousCmdEnabled, false);
-            this.set(resourceId, State.accessRestricted, false);
+                this.set(resourceId, State.passwordRequired, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.dangerousCmdEnabled, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.accessRestricted, RandomUtils.getRandom().nextDouble() < 0.5);
 
         });
     }
