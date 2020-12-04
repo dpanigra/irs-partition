@@ -167,7 +167,7 @@ public class DynDQNMain {
             default:
                 x = "30000";
                 break;
-        }*/
+        }
 
         //---------------------------------------------------------------------------------
         // Transfer learning increasing replicas stress test
