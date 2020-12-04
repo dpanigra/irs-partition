@@ -14,7 +14,7 @@ public class SystemTerminateFunction implements TerminateFunction<SystemState> {
 
     @Override
     public boolean terminated(SystemState systemState) {
-
+ /*
         // Model 1 VMs
         Boolean active, corrupted, appAvailable, dockerRuncUpdated, dockerExecAvailable;
         for (String resourceId : this.environment.getSystemDefinition().getResources()){
@@ -30,9 +30,9 @@ public class SystemTerminateFunction implements TerminateFunction<SystemState> {
                 return false;
         }
         return true;
-
+*/
         //-------------------------------------------------------------------------------------
-/*
+
         // Model 2 containers
         Boolean active, corrupted, shellCorrupted, cartCorrupted, confidentialityVuln, integrityVuln;
         for (String resourceId : this.environment.getSystemDefinition().getResources()){
@@ -52,7 +52,7 @@ public class SystemTerminateFunction implements TerminateFunction<SystemState> {
                 return false;
         }
         return true;
-*/
+
 
 
     }
