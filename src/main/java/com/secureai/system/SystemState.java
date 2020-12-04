@@ -31,7 +31,7 @@ public class SystemState extends DiscreteState {
 
     public void random() {
         this.environment.getSystemDefinition().getResources().forEach(resourceId -> {
-            /*
+
             // Model 1 VMs
             this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.appAvailable, RandomUtils.getRandom().nextDouble() < 0.5);
@@ -53,9 +53,9 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.dockerExecAvailable, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.containerCorrupted, RandomUtils.getRandom().nextDouble() < 0.5);
 
-             */
-            //-------------------------------------------------------------------------------------
 
+            //-------------------------------------------------------------------------------------
+  /*
             // Model 2 containers
             this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.restarted, RandomUtils.getRandom().nextDouble() < 0.5);
@@ -72,13 +72,13 @@ public class SystemState extends DiscreteState {
                 this.set(resourceId, State.passwordRequired, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.dangerousCmdEnabled, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.accessRestricted, RandomUtils.getRandom().nextDouble() < 0.5);
-
+ */
         });
     }
 
     public void worst() {
         this.environment.getSystemDefinition().getResources().forEach(resourceId -> {
-/*
+
          // Model 1 VMs
             this.set(resourceId, State.active, false);
             this.set(resourceId, State.firewallBlockICMP, false);
@@ -91,9 +91,9 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.dockerRuncUpgradable, true);
             this.set(resourceId, State.dockerExecAvailable, true);
             this.set(resourceId, State.containerCorrupted, true);
-*/
-            //-------------------------------------------------------------------------------------
 
+            //-------------------------------------------------------------------------------------
+/*
             // Model 2 containers
             this.set(resourceId, State.active, false);
             this.set(resourceId, State.restarted, false);
@@ -105,7 +105,7 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.passwordRequired, false);
             this.set(resourceId, State.dangerousCmdEnabled, true);
             this.set(resourceId, State.accessRestricted, false);
-
+*/
         });
     }
 
