@@ -57,7 +57,7 @@ public class DynDQNMain {
         // Test configuration ---------
         evaluate = false;
         transferLearning = true;
-        maxIterations = 1;
+        maxIterations = 2;
 
         runWithThreshold();
         //runWithTimer();
@@ -150,12 +150,12 @@ public class DynDQNMain {
 
 
         String x, y;
-        /*switch (iteration){
-            case 0: x = "30000";
-                    topology.getTasks().get("frontend-service").setReplication(2);
+        switch (iteration){
+            case 0: //x = "30000";
+                    //topology.getTasks().get("frontend-service").setReplication(2);
                     break;
-            case 1: x = "0";
-                    //random = true;
+            case 1: //x = "0";
+                    random = true;
                     break;
             case 2: x = "15000";
                 break;
@@ -220,7 +220,7 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
                 Integer.parseInt(argsMap.getOrDefault("layers", "1")),
-                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "256")),
+                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "150")),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
 
 

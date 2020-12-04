@@ -22,11 +22,11 @@ public class SystemState extends DiscreteState {
     @Override
     public void reset() {
         super.reset();
-        this.random();
-        /*if(DynDQNMain.random == false)
+        //this.random();
+        if(DynDQNMain.random == false)
             this.worst();
         else
-            this.random();*/
+            this.random();
     }
 
     public void random() {
