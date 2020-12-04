@@ -75,7 +75,7 @@ public class DynDQNMain {
     }
 
     public static void runWithThreshold() {
-        int EPOCH_THRESHOLD = 2000; // After X epochs
+        int EPOCH_THRESHOLD = 4000; // After X epochs
 
         DynDQNMain.setup();
 
@@ -222,6 +222,7 @@ public class DynDQNMain {
                 Integer.parseInt(argsMap.getOrDefault("layers", "1")),
                 Integer.parseInt(argsMap.getOrDefault("hiddenSize", "150")),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
+
 
         if(iteration > 0 && transferLearning){
             nn.setParams(new DynNNBuilder<>((MultiLayerNetwork) dql.getNeuralNet().getNeuralNetworks()[0])
