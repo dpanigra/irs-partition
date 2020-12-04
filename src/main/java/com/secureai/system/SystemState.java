@@ -59,9 +59,9 @@ public class SystemState extends DiscreteState {
             // Model 2 containers
             this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.restarted, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.corrupted, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.shellCorrupted, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.cartCorrupted, RandomUtils.getRandom().nextDouble() < 0.5);
+            this.set(resourceId, State.corrupted, true);
+            this.set(resourceId, State.shellCorrupted, true);
+            this.set(resourceId, State.cartCorrupted, true);
             this.set(resourceId, State.confidentialityVulnerability, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.integrityVulnerability, RandomUtils.getRandom().nextDouble() < 0.5);
             Boolean integrity = this.get(resourceId, State.integrityVulnerability);
