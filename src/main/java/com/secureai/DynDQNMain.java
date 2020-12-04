@@ -220,7 +220,7 @@ public class DynDQNMain {
         nn = new NNBuilder().build(newMdp.getObservationSpace().size(),
                 newMdp.getActionSpace().getSize(),
                 Integer.parseInt(argsMap.getOrDefault("layers", "1")),
-                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "150")),
+                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "256")),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));
 
 
