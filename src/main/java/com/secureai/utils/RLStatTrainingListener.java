@@ -8,6 +8,7 @@ import org.deeplearning4j.rl4j.util.IDataManager.StatEntry;
 public class RLStatTrainingListener implements TrainingListener {
 
     private Stat<Double> stat;
+    int lastStep = 0;
 
     public RLStatTrainingListener(String path) {
         this.stat = new Stat<>(path + "/" + "reward.csv", System.nanoTime());
@@ -30,7 +31,10 @@ public class RLStatTrainingListener implements TrainingListener {
 
     @Override
     public ListenerResponse onEpochTrainingResult(IEpochTrainer iEpochTrainer, StatEntry statEntry) {
-        this.stat.append(statEntry.getReward(), true);
+
+        this.stat.append(statEntry.getReward(), true, iEpochTrainer.getStepCounter()-lastStep);
+        lastStep = iEpochTrainer.getStepCounter();
+
         this.stat.flush();
         return null;
     }

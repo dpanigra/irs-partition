@@ -42,7 +42,7 @@ public class Stat<T> {
 
             if (this.bufferedWriter != null) {
                 try {
-                    this.bufferedWriter.write("Timestamp, Seconds, Reward\n");
+                    this.bufferedWriter.write("Timestamp, Seconds, Reward, Steps\n");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -77,7 +77,7 @@ public class Stat<T> {
         return this;
     }
 
-    public Stat<T> append(T value, boolean b) {
+    public Stat<T> append(T value, boolean b, int steps) {
         Timestamped<T> t = new Timestamped<>(value);
         double sec = ((double)System.nanoTime()-this.startTime)/1000000000;
 
@@ -86,7 +86,7 @@ public class Stat<T> {
 
         if (this.bufferedWriter != null) {
             try {
-                this.bufferedWriter.write(t.getTimestamp() + ", " + sec + ", " + t.getValue() + "\n");
+                this.bufferedWriter.write(t.getTimestamp() + ", " + sec + ", " + t.getValue() + ", "+ steps +"\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }

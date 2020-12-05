@@ -57,7 +57,7 @@ public class DynDQNMain {
         // Test configuration ---------
         evaluate = false;
         transferLearning = true;
-        maxIterations = 2;
+        maxIterations = 1;
 
         runWithThreshold();
         //runWithTimer();
@@ -150,7 +150,7 @@ public class DynDQNMain {
 
 
         String x, y;
-        switch (iteration){
+       /* switch (iteration){
             case 0: //x = "30000";
                     //topology.getTasks().get("frontend-service").setReplication(2);
                     break;
@@ -167,7 +167,7 @@ public class DynDQNMain {
             default:
                 x = "30000";
                 break;
-        }
+        }*/
 
         //---------------------------------------------------------------------------------
         // Transfer learning increasing replicas stress test
