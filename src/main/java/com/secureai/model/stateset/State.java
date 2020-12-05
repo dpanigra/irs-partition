@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum State {
-/*
+
     // Model 1 VMs
     active(0),
     firewallBlockICMP(1),
@@ -19,9 +19,9 @@ public enum State {
     dockerRuncUpgradable(8),
     dockerExecAvailable(9),
     containerCorrupted(10);
-*/
-    //-------------------------------------------------------------------------------------
 
+    //-------------------------------------------------------------------------------------
+/*
     // Model 2 containers
     active(0),
     restarted(1),
@@ -33,7 +33,7 @@ public enum State {
     passwordRequired(7),
     dangerousCmdEnabled(8),
     accessRestricted(9);
-
+*/
 
 
     @Getter
