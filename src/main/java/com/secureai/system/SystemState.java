@@ -22,7 +22,8 @@ public class SystemState extends DiscreteState {
     @Override
     public void reset() {
         super.reset();
-        this.random();
+        this.worst();
+        //this.random();
         /*if(DynDQNMain.random == false)
             this.worst();
         else
