@@ -16,23 +16,23 @@ public class SystemTerminateFunction implements TerminateFunction<SystemState> {
     public boolean terminated(SystemState systemState) {
 
         // Model 1 VMs
-        Boolean active, corrupted, appAvailable, dockerRuncUpdated, dockerExecAvailable;
-        for (String resourceId : this.environment.getSystemDefinition().getResources()){
-            active = systemState.get(resourceId, State.active);
-            corrupted = systemState.get(resourceId, State.corrupted);
-            appAvailable= systemState.get(resourceId, State.appAvailable);
-            dockerRuncUpdated = systemState.get(resourceId, State.dockerRuncUpdated);
-            dockerExecAvailable = systemState.get(resourceId, State.dockerExecAvailable);
-            if (    (active != null && !active ) ||
-                    ( appAvailable != null && !appAvailable) ||
-                    ( corrupted != null && corrupted) ||
-                    ( dockerRuncUpdated != null && dockerExecAvailable != null && !(dockerRuncUpdated || !dockerExecAvailable)))
-                return false;
-        }
-        return true;
+//        Boolean active, corrupted, appAvailable, dockerRuncUpdated, dockerExecAvailable;
+//        for (String resourceId : this.environment.getSystemDefinition().getResources()){
+//            active = systemState.get(resourceId, State.active);
+//            corrupted = systemState.get(resourceId, State.corrupted);
+//            appAvailable= systemState.get(resourceId, State.appAvailable);
+//            dockerRuncUpdated = systemState.get(resourceId, State.dockerRuncUpdated);
+//            dockerExecAvailable = systemState.get(resourceId, State.dockerExecAvailable);
+//            if (    (active != null && !active ) ||
+//                    ( appAvailable != null && !appAvailable) ||
+//                    ( corrupted != null && corrupted) ||
+//                    ( dockerRuncUpdated != null && dockerExecAvailable != null && !(dockerRuncUpdated || !dockerExecAvailable)))
+//                return false;
+//        }
+//        return true;
 
         //-------------------------------------------------------------------------------------
-/*
+
         // Model 2 containers
         Boolean active, corrupted, shellCorrupted, cartCorrupted, confidentialityVuln, integrityVuln;
         for (String resourceId : this.environment.getSystemDefinition().getResources()){
@@ -52,7 +52,6 @@ public class SystemTerminateFunction implements TerminateFunction<SystemState> {
                 return false;
         }
         return true;
-*/
 
 
     }

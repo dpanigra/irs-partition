@@ -15,29 +15,29 @@ import org.json.JSONObject;
 public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpace> {
 
     @Getter
-    private SystemActionSpace actionSpace;
+    public SystemActionSpace actionSpace;
     @Getter
-    private ActionSet actionSet;
+    public ActionSet actionSet;
     @Getter
-    private SystemStateSpace observationSpace;
+    public SystemStateSpace observationSpace;
     @Getter
-    private SystemState systemState;
+    public SystemState systemState;
     @Getter
-    private SystemRewardFunction systemRewardFunction;
+    protected SystemRewardFunction systemRewardFunction;
     @Getter
-    private SystemTerminateFunction systemTerminateFunction;
+    protected SystemTerminateFunction systemTerminateFunction;
     @Getter
-    private SystemDefinition systemDefinition;
+    public SystemDefinition systemDefinition;
 
     @Getter
-    private int step = 0;
+    protected int step = 0;
     @Getter
-    private int episodes = 0;
+    protected int episodes = 0;
     @Getter
-    private double cumulativeReward = 0;
+    protected double cumulativeReward = 0;
 
-    private MapCounter<String> actionCounter;
-    private Stat<Double> stat;
+    protected MapCounter<String> actionCounter;
+    protected Stat<Double> stat;
 
     public SystemEnvironment(Topology topology, ActionSet actionSet) {
         this.actionSet = actionSet;

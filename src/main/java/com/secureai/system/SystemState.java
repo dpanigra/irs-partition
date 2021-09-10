@@ -34,27 +34,26 @@ public class SystemState extends DiscreteState {
         this.environment.getSystemDefinition().getResources().forEach(resourceId -> {
 
             // Model 1 VMs
-            this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.appAvailable, RandomUtils.getRandom().nextDouble() < 0.5);
-            Boolean available = this.get(resourceId, State.appAvailable);
-            if(available != null && !available)
-                this.set(resourceId, State.firewallBlockICMP, false);
-            else
-                this.set(resourceId, State.firewallBlockICMP, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.firewallSoftBandwidthLimit, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.firewallSoftBandwidthLimit, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.restarted, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.corrupted, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.dockerRuncUpdated, RandomUtils.getRandom().nextDouble() < 0.5);
-            Boolean updated = this.get(resourceId, State.dockerRuncUpdated);
-            if(updated != null && !updated)
-                this.set(resourceId, State.dockerRuncUpgradable, true);
-            else
-                this.set(resourceId, State.dockerRuncUpgradable, false);
-            this.set(resourceId, State.dockerExecAvailable, RandomUtils.getRandom().nextDouble() < 0.5);
-            this.set(resourceId, State.containerCorrupted, RandomUtils.getRandom().nextDouble() < 0.5);
+//            this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
+//            this.set(resourceId, State.appAvailable, RandomUtils.getRandom().nextDouble() < 0.5);
+//            Boolean available = this.get(resourceId, State.appAvailable);
+//            if(available != null && !available)
+//                this.set(resourceId, State.firewallBlockICMP, false);
+//            else
+//                this.set(resourceId, State.firewallBlockICMP, RandomUtils.getRandom().nextDouble() < 0.5);
+//            this.set(resourceId, State.firewallSoftBandwidthLimit, RandomUtils.getRandom().nextDouble() < 0.5);
+//            this.set(resourceId, State.firewallSoftBandwidthLimit, RandomUtils.getRandom().nextDouble() < 0.5);
+//            this.set(resourceId, State.restarted, RandomUtils.getRandom().nextDouble() < 0.5);
+//            this.set(resourceId, State.corrupted, RandomUtils.getRandom().nextDouble() < 0.5);
+//            this.set(resourceId, State.dockerRuncUpdated, RandomUtils.getRandom().nextDouble() < 0.5);
+//            Boolean updated = this.get(resourceId, State.dockerRuncUpdated);
+//            if(updated != null && !updated)
+//                this.set(resourceId, State.dockerRuncUpgradable, true);
+//            else
+//                this.set(resourceId, State.dockerRuncUpgradable, false);
+//            this.set(resourceId, State.dockerExecAvailable, RandomUtils.getRandom().nextDouble() < 0.5);
+//            this.set(resourceId, State.containerCorrupted, RandomUtils.getRandom().nextDouble() < 0.5);
 
-          /*
             //-------------------------------------------------------------------------------------
 
             // Model 2 containers
@@ -73,7 +72,6 @@ public class SystemState extends DiscreteState {
                 this.set(resourceId, State.passwordRequired, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.dangerousCmdEnabled, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.accessRestricted, RandomUtils.getRandom().nextDouble() < 0.5);
- */
         });
     }
 
@@ -81,18 +79,17 @@ public class SystemState extends DiscreteState {
         this.environment.getSystemDefinition().getResources().forEach(resourceId -> {
 
          // Model 1 VMs
-            this.set(resourceId, State.active, false);
-            this.set(resourceId, State.firewallBlockICMP, false);
-            this.set(resourceId, State.firewallSoftBandwidthLimit, false);
-            this.set(resourceId, State.firewallSoftBandwidthLimit, false);
-            this.set(resourceId, State.appAvailable, false);
-            this.set(resourceId, State.restarted, false);
-            this.set(resourceId, State.corrupted, true);
-            this.set(resourceId, State.dockerRuncUpdated, false);
-            this.set(resourceId, State.dockerRuncUpgradable, true);
-            this.set(resourceId, State.dockerExecAvailable, true);
-            this.set(resourceId, State.containerCorrupted, true);
-/*
+//            this.set(resourceId, State.active, false);
+//            this.set(resourceId, State.firewallBlockICMP, false);
+//            this.set(resourceId, State.firewallSoftBandwidthLimit, false);
+//            this.set(resourceId, State.firewallSoftBandwidthLimit, false);
+//            this.set(resourceId, State.appAvailable, false);
+//            this.set(resourceId, State.restarted, false);
+//            this.set(resourceId, State.corrupted, true);
+//            this.set(resourceId, State.dockerRuncUpdated, false);
+//            this.set(resourceId, State.dockerRuncUpgradable, true);
+//            this.set(resourceId, State.dockerExecAvailable, true);
+//            this.set(resourceId, State.containerCorrupted, true);
             //-------------------------------------------------------------------------------------
 
             // Model 2 containers
@@ -106,7 +103,6 @@ public class SystemState extends DiscreteState {
             this.set(resourceId, State.passwordRequired, false);
             this.set(resourceId, State.dangerousCmdEnabled, true);
             this.set(resourceId, State.accessRestricted, false);
-*/
         });
     }
 

@@ -8,20 +8,18 @@ import lombok.RequiredArgsConstructor;
 public enum State {
 
     // Model 1 VMs
-    active(0),
-    firewallBlockICMP(1),
-    firewallSoftBandwidthLimit(2),
-    firewallHeavyBandwidthLimit(3),
-    appAvailable(4),
-    restarted(5),
-    corrupted(6),
-    dockerRuncUpdated(7),
-    dockerRuncUpgradable(8),
-    dockerExecAvailable(9),
-    containerCorrupted(10);
+//    active(0),
+//    firewallBlockICMP(1),
+//    firewallSoftBandwidthLimit(2),
+//    firewallHeavyBandwidthLimit(3),
+//    appAvailable(4),
+//    restarted(5),
+//    corrupted(6),
+//    dockerRuncUpdated(7),
+//    dockerRuncUpgradable(8),
+//    dockerExecAvailable(9),
+//    containerCorrupted(10);
 
-    //-------------------------------------------------------------------------------------
-/*
     // Model 2 containers
     active(0),
     restarted(1),
@@ -33,7 +31,6 @@ public enum State {
     passwordRequired(7),
     dangerousCmdEnabled(8),
     accessRestricted(9);
-*/
 
 
     @Getter
