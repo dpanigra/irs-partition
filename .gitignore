@@ -235,3 +235,7 @@ buildNumber.properties
 # End of https://www.gitignore.io/api/java,maven,intellij,intellij+all,intellij+iml
 
 output/*
+
+# for the interim uml diagrams
+uml/uml.vpp.bak*
+uml/uml.vpp.lck*

@@ -8,6 +8,7 @@ tasks:
     type: image
     replication: 1
     state:
+      - start
       - active
       - restarted
       - corrupted

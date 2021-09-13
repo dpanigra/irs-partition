@@ -30,7 +30,8 @@ public enum State {
     integrityVulnerability(6),
     passwordRequired(7),
     dangerousCmdEnabled(8),
-    accessRestricted(9);
+    accessRestricted(9),
+    start(10);
 
 
     @Getter
