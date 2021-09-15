@@ -50,7 +50,7 @@ public class PartitionDQNMain {
 
         SystemEnvironment mdp = new SystemEnvironment(topology, actionSet);
         System.out.println(mdp.getSystemDefinition());
-        List<PartitionSystemEnvironment> allPartitions = PartitionCreatorUtility.creationPartitions(mdp);
+        List<PartitionSystemEnvironment> allPartitions = PartitionCreatorUtility.createPartitions(mdp);
         for (PartitionSystemEnvironment partitionMdp: allPartitions){ //train on nn for each partition
             QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                     Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed

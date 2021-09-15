@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class PartitionCreatorUtility {
     
-    public static List<PartitionSystemEnvironment> creationPartitions(SystemEnvironment fullMdp) {
+    public static List<PartitionSystemEnvironment> createPartitions(SystemEnvironment fullMdp) {
         MasterMDPHolder masterMDPHolder = new MasterMDPHolder();
         masterMDPHolder.setActionSet(fullMdp.getActionSet());
         masterMDPHolder.setActionSpace(fullMdp.getActionSpace());
