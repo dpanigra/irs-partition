@@ -7,30 +7,36 @@ A responsive Intrusion Response System (IRS) is critical to every organization. 
 ## Packages and Tools Used
 * dl4j
 * rl4j
-* Visual Paradigm (for UML class and sequential diagrams)
 
 ## Application used
 Reference: The Online Boutique (OB) application from [here.](https://github.com/GoogleCloudPlatform/microservices-demo)
 
 ![Architecture](https://raw.githubusercontent.com/GoogleCloudPlatform/microservices-demo/master/docs/img/architecture-diagram.png?raw=true "Architecture")
 
-## Class diagrams
-Find below are important class diagram pertaining to the creational, structural, and behaviorial pattern of the code.
+## UML diagrams
+Find below are the crictical part of the diagrams. They show how the application is creating system partitions.The design uses the creational, structural, and behaviorial design patterns to do so.
 
-Break down a complete system to a number of partions. There is one partition for one components of the applications and of the software components. There are 10 images and 1 redis cache used. Thus, there are 11 partitions. 
+![Partition system - main](uml/uml-classdiagram.png?raw=true "Partition system - main")
 
-![Partition system - main](uml/secureai-partition-class-diagram-main.jpg?raw=true "Partition system - main")
+Please note for convience, the sequence diagram is broken into two parts for readability.
 
-![Partition system - action](uml/secureai-partition-class-diagram-action.jpg?raw=true "Partition system - action")
+![Sequence Diagram - part1](uml/uml-sequence-diagram-part1.png?raw=true "Sequence Diagram - part1")
 
-![Partition system - topology](uml/secureai-partition-class-diagram-topology.jpg?raw=true "Partition system - topology")
+![Sequence Diagram - part2](uml/uml-sequence-diagram-part2.png?raw=true "Sequence Diagram - part2")
 
-## Sequence diagrams
-Please note for convience, a sequence diagram is broken into two parts for readability.
+## System partitions
 
-![Sequence Diagram - part1](uml/secureai-sequence-diagram-part1.jpg?raw=true "Sequence Diagram - part1")
+The below diagram shows the number of componets. There is one component for each of the images and for each of the software used. Each component corresponds to one partition of the system. Please note there could be many replicas of the compoents in each partition.
 
-![Sequence Diagram - part2](uml/secureai-sequence-diagram-part2.jpg?raw=true "Sequence Diagram - part1")
+![Partition system - systemcomponents](uml/system-components.png?raw=true "Partition system - systemcomponents")
+
+The below diagram shows how the monolothic System's state attributes are broken down into multiple set of attributes one for each partitions.
+
+![Partition system - statepartition](uml/system-partitions-stateattribs.png?raw=true "Partition system - statepartition")
+
+The below diagram shows how the monolothic System's action set is broken down into multiple action set one for each partitions.
+
+![Partition system - statepartition](uml/system-partitions-actionset.png?raw=true "Partition system - statepartition")
 
 ## Instructions
 1. Clone the repo
