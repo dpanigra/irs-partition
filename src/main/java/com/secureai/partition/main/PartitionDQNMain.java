@@ -48,9 +48,9 @@ public class PartitionDQNMain {
         Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "2-containers")), Topology.class);
         ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "2-containers")), ActionSet.class);
 
-        SystemEnvironment mdp = new SystemEnvironment(topology, actionSet);
-        System.out.println(mdp.getSystemDefinition());
-        List<PartitionSystemEnvironment> allPartitions = PartitionCreatorUtility.createPartitions(mdp);
+        SystemEnvironment systemModel = new SystemEnvironment(topology, actionSet);
+        System.out.println(systemModel.getSystemDefinition());
+        List<PartitionSystemEnvironment> allPartitions = PartitionCreatorUtility.createPartitions(systemModel);
         for (PartitionSystemEnvironment partitionMdp: allPartitions){ //train on nn for each partition
             QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                     Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
