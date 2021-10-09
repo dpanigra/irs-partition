@@ -21,18 +21,18 @@ import java.util.Map;
  */
 public class PartitionCreatorUtility {
     
-    public static List<PartitionSystemEnvironment> createPartitions(SystemEnvironment fullMdp) {
+    public static List<PartitionSystemEnvironment> createPartitions(SystemEnvironment systemModel) {
         MasterMDPHolder masterMDPHolder = new MasterMDPHolder();
-        masterMDPHolder.setActionSet(fullMdp.getActionSet());
-        masterMDPHolder.setActionSpace(fullMdp.getActionSpace());
-        masterMDPHolder.setObservationSpace(fullMdp.getObservationSpace());
-        masterMDPHolder.setSystemDefinition(fullMdp.getSystemDefinition());
-        masterMDPHolder.setSystemState(fullMdp.getSystemState());
+        masterMDPHolder.setActionSet(systemModel.getActionSet());
+        masterMDPHolder.setActionSpace(systemModel.getActionSpace());
+        masterMDPHolder.setObservationSpace(systemModel.getObservationSpace());
+        masterMDPHolder.setSystemDefinition(systemModel.getSystemDefinition());
+        masterMDPHolder.setSystemState(systemModel.getSystemState());
         
         
-        ActionSet allActionSet =  fullMdp.getActionSet();
+        ActionSet allActionSet =  systemModel.getActionSet();
 
-        Topology fullTopology = fullMdp.getSystemDefinition().getTopology();
+        Topology fullTopology = systemModel.getSystemDefinition().getTopology();
         //for each partition prepare id, task, and the connections
         List<PartitionSystemEnvironment> partitionMdp = new ArrayList<>();
         
