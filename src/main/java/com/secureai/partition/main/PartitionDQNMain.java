@@ -51,7 +51,7 @@ public class PartitionDQNMain {
         SystemEnvironment systemModel = new SystemEnvironment(topology, actionSet);
         System.out.println(systemModel.getSystemDefinition());
         List<PartitionSystemEnvironment> allPartitions = PartitionCreatorUtility.createPartitions(systemModel);
-        for (PartitionSystemEnvironment partitionMdp: allPartitions){ //train on nn for each partition
+        for (PartitionSystemEnvironment partitionSystemModel: allPartitions){ //train on nn for each partition
             QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                     Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                     Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "1000")),      //Max step By epoch
@@ -68,8 +68,8 @@ public class PartitionDQNMain {
                     Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
             );
 
-            FilteredMultiLayerNetwork nn = new NNBuilder().build(partitionMdp.getObservationSpace().size(),
-                    partitionMdp.getActionSpace().getSize(),
+            FilteredMultiLayerNetwork nn = new NNBuilder().build(partitionSystemModel.getObservationSpace().size(),
+                    partitionSystemModel.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
                     Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
                     Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));             
@@ -79,7 +79,7 @@ public class PartitionDQNMain {
 
 
             String dqnType = argsMap.getOrDefault("dqn", "standard");
-            QLearningDiscreteDense<SystemState> dql = new QLearningDiscreteDense<>(partitionMdp, dqnType.equals("parallel") ? new ParallelDQN<>(nn) : dqnType.equals("spark") ? new SparkDQN<>(nn) : new DQN<>(nn), qlConfiguration);
+            QLearningDiscreteDense<SystemState> dql = new QLearningDiscreteDense<>(partitionSystemModel, dqnType.equals("parallel") ? new ParallelDQN<>(nn) : dqnType.equals("spark") ? new SparkDQN<>(nn) : new DQN<>(nn), qlConfiguration);
             DataManager dataManager = new DataManager(true);
             dql.addListener(new DataManagerTrainingListener(dataManager));
             dql.addListener(new RLStatTrainingListener(dataManager.getInfo().substring(0, dataManager.getInfo().lastIndexOf('/'))));
@@ -94,9 +94,9 @@ public class PartitionDQNMain {
             int EPISODES = 10;
             double rewards = 0;
             for (int i = 0; i < EPISODES; i++) {
-                partitionMdp.reset();
+                partitionSystemModel.reset();
                 System.out.println("play policy");
-                double reward = dql.getPolicy().play(partitionMdp);
+                double reward = dql.getPolicy().play(partitionSystemModel);
                 rewards += reward;
                 Logger.getAnonymousLogger().info("[Evaluate] Reward: " + reward);
             }
