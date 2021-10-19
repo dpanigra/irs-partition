@@ -97,8 +97,8 @@ tasks:
 
 
   # Databases
-  redis-cache:
-    type: database
+  redis-service:
+    type: image
     replication: 1
     state:
       - start
@@ -190,11 +190,11 @@ connections:
     direction: bidirectional
     from: recomendation-service
     to: product-catalog-service
-  cart-service-to-redis-cache:
+  cart-service-to-redis-service:
     type: proprietary
     direction: bidirectional
     from: cart-service
-    to: redis-cache
+    to: redis-service
   
   
   

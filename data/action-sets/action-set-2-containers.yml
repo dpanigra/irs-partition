@@ -9,7 +9,7 @@ actions:
     post-condition: state[active] = rand(1)
     components:
       - frontend-service
-      - redis-cache
+      - redis-service
 
   restart:
     execution-time: 500
@@ -18,7 +18,7 @@ actions:
     post-condition: state[corrupted] = rand(0.75), state[restarted] = rand(1)
     components:
       - frontend-service
-      - redis-cache
+      - redis-service
 
   heal:
     execution-time: 1000
@@ -27,7 +27,7 @@ actions:
     post-condition: state[corrupted] = rand(0), state[shellCorrupted] = rand(0)
     components:
       - frontend-service
-      - redis-cache
+      - redis-service
 
 
   healRedisSecure:
@@ -36,7 +36,7 @@ actions:
     pre-condition: state[active] == true && state[cartCorrupted] == true && state[integrityVulnerability] == false
     post-condition: state[cartCorrupted] = rand(0)
     components:
-      - redis-cache
+      - redis-service
 
   healRedisUnsecure:
     execution-time: 1000
@@ -44,7 +44,7 @@ actions:
     pre-condition: state[active] == true && state[cartCorrupted] == true && state[integrityVulnerability] == true
     post-condition: state[cartCorrupted] = rand(1)
     components:
-      - redis-cache
+      - redis-service
 
   enablePassword:
     execution-time: 1000
@@ -52,7 +52,7 @@ actions:
     pre-condition: state[active] == true && state[passwordRequired] == false && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
     post-condition: state[passwordRequired] = rand(1), state[confidentialityVulnerability] = rand(0), state[integrityVulnerability] = rand(0)
     components:
-      - redis-cache
+      - redis-service
 
   disableDangerousCmd:
     execution-time: 50
@@ -60,7 +60,7 @@ actions:
     pre-condition: state[active] == true && state[dangerousCmdEnabled] == true && state[integrityVulnerability] == true
     post-condition: state[dangerousCmdEnabled] = rand(0), state[integrityVulnerability] = rand(0.85)
     components:
-      - redis-cache
+      - redis-service
 
   restrictAccess:
     execution-time: 50
@@ -68,4 +68,4 @@ actions:
     pre-condition: state[active] == true && state[accessRestricted] == false && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
     post-condition: state[accessRestricted] = rand(1), state[confidentialityVulnerability] = rand(0.7) , state[integrityVulnerability] = rand(0.7)
     components:
-      - redis-cache
+      - redis-service

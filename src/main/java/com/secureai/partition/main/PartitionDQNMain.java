@@ -100,7 +100,7 @@ public class PartitionDQNMain {
             }
             Logger.getAnonymousLogger().info("[Evaluate] Average reward: " + rewards / EPISODES);   
             
-            break; //after the first partition is trained; for testing
+//            break; //after the first partition is trained; for testing
         } //train one nn for each partition
     } //end of main 
 }

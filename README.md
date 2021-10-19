@@ -33,23 +33,20 @@ Reference: The Online Boutique (OB) application from [here.](https://github.com/
 ![Architecture](https://raw.githubusercontent.com/GoogleCloudPlatform/microservices-demo/master/docs/img/architecture-diagram.png?raw=true "Architecture")
 
 ## UML diagrams
-Find below are the crictical part of the diagrams. They show how the application is creating system partitions.The design uses the creational, structural, and behaviorial design patterns to do so.
+Find below are the critical part of the diagrams. They show how the software is creating system partitions.The design uses the creational, structural, and behaviorial design patterns to do so.
 
 ![Partition system - main](uml/uml-classdiagram.png?raw=true "Partition system - main")
 
-Please note for convience, the sequence diagram is broken into two parts for readability.
+![Sequence Diagram - part1](uml/uml-sequencediagram.png?raw=true "Sequence Diagram")
 
-![Sequence Diagram - part1](uml/uml-sequence-diagram-part1.png?raw=true "Sequence Diagram - part1")
-
-![Sequence Diagram - part2](uml/uml-sequence-diagram-part2.png?raw=true "Sequence Diagram - part2")
 
 ## System partitions
 
-The below diagram shows the number of componets. There is one component for each of the images and for each of the software used. Each component corresponds to one partition of the system. Please note there could be many replicas of the compoents in each partition.
+The system model consists of information on all the microservices used in the system.  A service provides the software implementation in a container image. We define a component as an executable unit of a service, that holds the image, and a partition as a running unit of all the containers of a particular component image. Each partition contains at least one container of the respective component in a \textit{secure} state of the system.  Every service has a corresponding component with its separate partition, as shown in the diagram below:
 
 ![Partition system - systemcomponents](uml/system-components.png?raw=true "Partition system - systemcomponents")
 
-The below diagram shows how the monolothic System's state attributes are broken down into multiple set of attributes one for each partitions.
+The below diagram shows how the monolothic System's state variables are broken down into multiple set of variables one for each partitions.
 
 ![Partition system - statepartition](uml/system-partitions-stateattribs.png?raw=true "Partition system - statepartition")
 
