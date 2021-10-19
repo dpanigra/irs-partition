@@ -57,6 +57,7 @@ public class SystemState extends DiscreteState {
             //-------------------------------------------------------------------------------------
 
             // Model 2 containers
+            this.set(resourceId, State.start, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.active, RandomUtils.getRandom().nextDouble() < 0.5);
             this.set(resourceId, State.restarted, false);
             this.set(resourceId, State.corrupted, RandomUtils.getRandom().nextDouble() < 0.5);
