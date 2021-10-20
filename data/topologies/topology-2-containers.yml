@@ -5,7 +5,6 @@ tasks:
 
   # Services
   frontend-service:
-    type: image
     replication: 1
     state:
       - start
@@ -14,7 +13,6 @@ tasks:
       - corrupted
       - shellCorrupted
   cart-service:
-    type: image
     replication: 1
     state:
       - start
@@ -23,7 +21,6 @@ tasks:
       - corrupted
       - shellCorrupted
   recomendation-service:
-    type: image
     replication: 1
     state:
       - start
@@ -32,7 +29,6 @@ tasks:
       - corrupted
       - shellCorrupted
   product-catalog-service:
-    type: image
     replication: 1
     state:
       - start
@@ -41,7 +37,6 @@ tasks:
       - corrupted
       - shellCorrupted
   checkout-service:
-    type: image
     replication: 1
     state:
       - start
@@ -50,7 +45,6 @@ tasks:
       - corrupted
       - shellCorrupted
   ad-service:
-    type: image
     replication: 1
     state:
       - start
@@ -59,7 +53,6 @@ tasks:
       - corrupted
       - shellCorrupted
   email-service:
-    type: image
     replication: 1
     state:
       - start
@@ -68,7 +61,6 @@ tasks:
       - corrupted
       - shellCorrupted
   payment-service:
-    type: image
     replication: 1
     state:
       - start
@@ -77,7 +69,6 @@ tasks:
       - corrupted
       - shellCorrupted
   shiping-service:
-    type: image
     replication: 1
     state:
       - start
@@ -86,7 +77,6 @@ tasks:
       - corrupted
       - shellCorrupted
   currency-service:
-    type: image
     replication: 1
     state:
       - start
@@ -94,11 +84,7 @@ tasks:
       - restarted
       - corrupted
       - shellCorrupted
-
-
-  # Databases
   redis-service:
-    type: image
     replication: 1
     state:
       - start
