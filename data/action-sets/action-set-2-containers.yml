@@ -1,7 +1,5 @@
 id: action-set-2-containers
-
 actions:
-
   start:
     execution-time: 300
     execution-cost: 100
@@ -10,7 +8,6 @@ actions:
     components:
       - frontend-service
       - redis-service
-
   restart:
     execution-time: 500
     execution-cost: 300
@@ -19,7 +16,6 @@ actions:
     components:
       - frontend-service
       - redis-service
-
   heal:
     execution-time: 1000
     execution-cost: 500
@@ -28,8 +24,6 @@ actions:
     components:
       - frontend-service
       - redis-service
-
-
   healRedisSecure:
     execution-time: 1000
     execution-cost: 500
@@ -37,7 +31,6 @@ actions:
     post-condition: state[cartCorrupted] = rand(0)
     components:
       - redis-service
-
   healRedisUnsecure:
     execution-time: 1000
     execution-cost: 500
@@ -45,7 +38,6 @@ actions:
     post-condition: state[cartCorrupted] = rand(1)
     components:
       - redis-service
-
   enablePassword:
     execution-time: 1000
     execution-cost: 1000
@@ -53,7 +45,6 @@ actions:
     post-condition: state[passwordRequired] = rand(1), state[confidentialityVulnerability] = rand(0), state[integrityVulnerability] = rand(0)
     components:
       - redis-service
-
   disableDangerousCmd:
     execution-time: 50
     execution-cost: 500
@@ -61,7 +52,6 @@ actions:
     post-condition: state[dangerousCmdEnabled] = rand(0), state[integrityVulnerability] = rand(0.85)
     components:
       - redis-service
-
   restrictAccess:
     execution-time: 50
     execution-cost: 300
