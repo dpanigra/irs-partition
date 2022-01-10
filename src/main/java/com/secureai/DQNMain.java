@@ -39,8 +39,11 @@ public class DQNMain {
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
 
-        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "1-vms")), Topology.class);
-        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "1-vms")), ActionSet.class);
+        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "2-containers")), Topology.class);
+        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "2-containers")), ActionSet.class);
+
+//        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "1-vms")), Topology.class);
+//        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "1-vms")), ActionSet.class);
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
@@ -63,7 +66,7 @@ public class DQNMain {
                 mdp.getActionSpace().getSize(),
                 Integer.parseInt(argsMap.getOrDefault("layers", "3")),
                 Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
-                Integer.parseInt(argsMap.getOrDefault("learningRate", "0.001")));
+                Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));             
         //nn.setMultiLayerNetworkPredictionFilter(input -> mdp.getActionSpace().actionsMask(input));
         nn.setListeners(new ScoreIterationListener(100));
         //nn.setListeners(new PerformanceListener(1, true, true));

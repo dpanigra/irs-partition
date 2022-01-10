@@ -21,7 +21,7 @@ public class SystemEnvironment implements SMDP<SystemState, Integer, DiscreteSpa
     @Getter
     public SystemStateSpace observationSpace;
     @Getter
-    public SystemState systemState;
+    protected SystemState systemState;
     @Getter
     protected SystemRewardFunction systemRewardFunction;
     @Getter

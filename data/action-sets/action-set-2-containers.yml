@@ -7,6 +7,15 @@ actions:
     post-condition: state[active] = rand(1)
     components:
       - frontend-service
+      - cart-service
+      - recomendation-service
+      - product-catalog-service
+      - checkout-service
+      - ad-service
+      - email-service
+      - payment-service
+      - shiping-service
+      - currency-service
       - redis-service
   restart:
     execution-time: 500
@@ -15,6 +24,15 @@ actions:
     post-condition: state[corrupted] = rand(0.75), state[restarted] = rand(1)
     components:
       - frontend-service
+      - cart-service
+      - recomendation-service
+      - product-catalog-service
+      - checkout-service
+      - ad-service
+      - email-service
+      - payment-service
+      - shiping-service
+      - currency-service
       - redis-service
   heal:
     execution-time: 1000
@@ -23,6 +41,15 @@ actions:
     post-condition: state[corrupted] = rand(0), state[shellCorrupted] = rand(0)
     components:
       - frontend-service
+      - cart-service
+      - recomendation-service
+      - product-catalog-service
+      - checkout-service
+      - ad-service
+      - email-service
+      - payment-service
+      - shiping-service
+      - currency-service
       - redis-service
   healRedisSecure:
     execution-time: 1000
