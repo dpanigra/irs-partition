@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.apache.log4j.BasicConfigurator;
 
 public class PartitionDQNMain {
 
@@ -39,6 +40,7 @@ public class PartitionDQNMain {
 
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
         System.setProperty("org.bytedeco.javacpp.maxbytes", "0");
+        BasicConfigurator.configure();
         TimeUtils.setupStartMillis();
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
