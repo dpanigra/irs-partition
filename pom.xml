@@ -127,7 +127,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>com.secureai.partition.main.PartitionDQNMain</mainClass>
-<!--                            <mainClass>com.secureai.DQNMain</mainClass>-->
+                            <!--<mainClass>com.secureai.DQNMain</mainClass>-->
                             <classpathPrefix>dependency-jars/</classpathPrefix>
                         </manifest>
                     </archive>

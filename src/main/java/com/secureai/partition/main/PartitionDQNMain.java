@@ -34,8 +34,6 @@ import org.apache.log4j.BasicConfigurator;
 
 public class PartitionDQNMain {
 
-    public static boolean training = true;
-
     public static void main(String... args) throws IOException {
 
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
@@ -45,8 +43,8 @@ public class PartitionDQNMain {
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
 
-        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "2-containers")), Topology.class);
-        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "2-containers")), ActionSet.class);
+        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "3-containers")), Topology.class);
+        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "3-containers")), ActionSet.class);
 
         SystemEnvironment systemModel = new SystemEnvironment(topology, actionSet);
         System.out.println(systemModel.getSystemDefinition());
@@ -54,7 +52,7 @@ public class PartitionDQNMain {
         for (PartitionSystemEnvironment partitionSystemModel: allPartitions){ //train on nn for each partition
             QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                     Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
-                    Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "1000")),      //Max step By epoch
+                    Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),      //Max step By epoch                    
                     Integer.parseInt(argsMap.getOrDefault("maxStep", "15000")),          //Max step
                     Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
                     Integer.parseInt(argsMap.getOrDefault("batchSize", "128")),           //size of batches
@@ -71,7 +69,7 @@ public class PartitionDQNMain {
             FilteredMultiLayerNetwork nn = new NNBuilder().build(partitionSystemModel.getObservationSpace().size(),
                     partitionSystemModel.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "16")),
                     Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));             
             nn.setListeners(new ScoreIterationListener(100));
             System.out.println(nn.summary());
@@ -88,20 +86,6 @@ public class PartitionDQNMain {
             long endTime = System.nanoTime();
             long trainingTime =(endTime-startTime)/1000000000;
             Logger.getAnonymousLogger().info("[Time] Total training time (seconds):"+trainingTime);
-            training = false;
-
-            System.out.println("[Play] Starting experiment");
-            int EPISODES = 10;
-            double rewards = 0;
-            for (int i = 0; i < EPISODES; i++) {
-                partitionSystemModel.reset();
-                System.out.println("play policy");
-                double reward = dql.getPolicy().play(partitionSystemModel);
-                rewards += reward;
-                Logger.getAnonymousLogger().info("[Evaluate] Reward: " + reward);
-            }
-            Logger.getAnonymousLogger().info("[Evaluate] Average reward: " + rewards / EPISODES);   
-            
 //            break; //after the first partition is trained; for testing
         } //train one nn for each partition
     } //end of main 

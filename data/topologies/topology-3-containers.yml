@@ -1,0 +1,54 @@
+id: topology-2-containers
+
+tasks:
+  # Classic Api Gateway
+
+  # Services
+  frontend-service:
+    replication: 1
+    state:
+      - start
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  cart-service:
+    replication: 1
+    state:
+      - start
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+  redis-service:
+    replication: 1
+    state:
+      - start
+      - active
+      - restarted
+      - corrupted
+      - shellCorrupted
+      - cartCorrupted
+      - confidentialityVulnerability
+      - integrityVulnerability
+      - passwordRequired
+      - dangerousCmdEnabled
+      - accessRestricted     
+connections:
+  # First tier
+  frontend-service-to-cart-service:
+    type: proprietary
+    direction: bidirectional
+    from: frontend-service
+    to: cart-service
+  # Second tier
+  cart-service-to-redis-service:
+    type: proprietary
+    direction: bidirectional
+    from: cart-service
+    to: redis-service
+  
+  
+  
+  
+  

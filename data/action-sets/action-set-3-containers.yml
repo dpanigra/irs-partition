@@ -1,0 +1,43 @@
+id: action-set-2-containers
+actions:
+  start:
+    execution-time: 300
+    execution-cost: 100
+    pre-condition: state[active] == false
+    post-condition: state[active] = rand(1)
+    components:
+      - frontend-service
+      - cart-service
+      - redis-service
+  restart:
+    execution-time: 500
+    execution-cost: 300
+    pre-condition: state[active] == true && state[corrupted] == true && state[restarted] == false
+    post-condition: state[corrupted] = rand(0.75), state[restarted] = rand(1)
+    components:
+      - frontend-service
+      - cart-service
+      - redis-service
+  heal:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[corrupted] == true OR state[shellCorrupted] == true
+    post-condition: state[corrupted] = rand(0), state[shellCorrupted] = rand(0)
+    components:
+      - frontend-service
+      - cart-service
+      - redis-service
+  healRedisSecure:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[cartCorrupted] == true && state[integrityVulnerability] == false
+    post-condition: state[cartCorrupted] = rand(0)
+    components:
+      - redis-service
+  healRedisUnsecure:
+    execution-time: 1000
+    execution-cost: 500
+    pre-condition: state[active] == true && state[cartCorrupted] == true && state[integrityVulnerability] == true
+    post-condition: state[cartCorrupted] = rand(1)
+    components:
+      - redis-service

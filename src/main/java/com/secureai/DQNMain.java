@@ -26,12 +26,7 @@ import java.util.logging.Logger;
 
 public class DQNMain {
 
-    public static boolean training = true;
-
     public static void main(String... args) throws IOException {
-
-
-
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
         System.setProperty("org.bytedeco.javacpp.maxbytes", "0");
         BasicConfigurator.configure();
@@ -39,11 +34,8 @@ public class DQNMain {
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
 
-        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "2-containers")), Topology.class);
-        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "2-containers")), ActionSet.class);
-
-//        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "1-vms")), Topology.class);
-//        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "1-vms")), ActionSet.class);
+        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "3-containers")), Topology.class);
+        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "3-containers")), ActionSet.class);
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
@@ -84,18 +76,5 @@ public class DQNMain {
         long endTime = System.nanoTime();
         long trainingTime =(endTime-startTime)/1000000000;
         Logger.getAnonymousLogger().info("[Time] Total training time (seconds):"+trainingTime);
-        training = false;
-
-        System.out.println("[Play] Starting experiment");
-        int EPISODES = 10;
-        double rewards = 0;
-        for (int i = 0; i < EPISODES; i++) {
-            mdp.reset();
-            System.out.println("play policy");
-            double reward = dql.getPolicy().play(mdp);
-            rewards += reward;
-            Logger.getAnonymousLogger().info("[Evaluate] Reward: " + reward);
-        }
-        Logger.getAnonymousLogger().info("[Evaluate] Average reward: " + rewards / EPISODES);
     }
 }
