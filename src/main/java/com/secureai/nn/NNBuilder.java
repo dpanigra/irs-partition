@@ -43,7 +43,7 @@ public class NNBuilder {
                         .activation(Activation.IDENTITY)
                         .build())
                 .build();
-
+        System.out.println("nn config: " + conf);
         FilteredMultiLayerNetwork model = new FilteredMultiLayerNetwork(conf);
         model.init();
         return model;

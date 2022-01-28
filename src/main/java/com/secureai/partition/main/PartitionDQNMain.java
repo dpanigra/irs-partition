@@ -35,7 +35,16 @@ import org.apache.log4j.BasicConfigurator;
 public class PartitionDQNMain {
 
     public static void main(String... args) throws IOException {
-
+    /**
+    * Usage example:
+    * java  -jar target/secureai.jar \
+        --seed 50 \
+        --maxEpochStep 1500 \
+        --learningRate 0.000035 \
+        --topology 2-containers \
+        --actionSet 2-containers
+        --partition frontend-service \
+    **/
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
         System.setProperty("org.bytedeco.javacpp.maxbytes", "0");
         BasicConfigurator.configure();
@@ -43,13 +52,25 @@ public class PartitionDQNMain {
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
 
-        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "3-containers")), Topology.class);
-        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "3-containers")), ActionSet.class);
-
+        String topoloy_file = String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "3-containers"));
+        String actionset_file = String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "3-containers"));
+        Topology topology = YAML.parse(topoloy_file, Topology.class);
+        ActionSet actionSet = YAML.parse(actionset_file, ActionSet.class);
+        System.out.println("topoloy_file:"+topoloy_file);
+        System.out.println("actionset_file:"+actionset_file);
+        
         SystemEnvironment systemModel = new SystemEnvironment(topology, actionSet);
         System.out.println(systemModel.getSystemDefinition());
         List<PartitionSystemEnvironment> allPartitions = PartitionCreatorUtility.createPartitions(systemModel);
         for (PartitionSystemEnvironment partitionSystemModel: allPartitions){ //train on nn for each partition
+            
+            //train only a single partition
+            if (argsMap.get("partition") != null) {
+                if (!partitionSystemModel.getSystemDefinition().getTopology().getId().equals(argsMap.get("partition"))) {
+                    continue;
+                }
+            }
+            
             QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                     Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
                     Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),      //Max step By epoch                    
@@ -65,7 +86,7 @@ public class PartitionDQNMain {
                     Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "15000")),     //num step for eps greedy a:qnneal
                     Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
             );
-
+            System.out.println("qlConfig:" + qlConfiguration);
             FilteredMultiLayerNetwork nn = new NNBuilder().build(partitionSystemModel.getObservationSpace().size(),
                     partitionSystemModel.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
@@ -74,6 +95,7 @@ public class PartitionDQNMain {
             nn.setListeners(new ScoreIterationListener(100));
             System.out.println(nn.summary());
 
+            System.out.println("Training for " + partitionSystemModel.getSystemDefinition().getTopology().getId());
 
 
             String dqnType = argsMap.getOrDefault("dqn", "standard");

@@ -27,15 +27,28 @@ import java.util.logging.Logger;
 public class DQNMain {
 
     public static void main(String... args) throws IOException {
+    /**
+    * Usage example:
+    * java  -jar target/secureai.jar \
+        --seed 50 \
+        --maxEpochStep 1500 \
+        --learningRate 0.000035 \
+        --topology 2-containers \
+        --actionSet 2-containers
+    **/        
         System.setProperty("org.bytedeco.javacpp.maxphysicalbytes", "0");
         System.setProperty("org.bytedeco.javacpp.maxbytes", "0");
         BasicConfigurator.configure();
         TimeUtils.setupStartMillis();
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
-
-        Topology topology = YAML.parse(String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "3-containers")), Topology.class);
-        ActionSet actionSet = YAML.parse(String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "3-containers")), ActionSet.class);
+        
+        String topoloy_file = String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "3-containers"));
+        String actionset_file = String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "3-containers"));
+        Topology topology = YAML.parse(topoloy_file, Topology.class);
+        ActionSet actionSet = YAML.parse(actionset_file, ActionSet.class);
+        System.out.println("topoloy_file:"+topoloy_file);
+        System.out.println("actionset_file:"+actionset_file);
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
@@ -52,7 +65,7 @@ public class DQNMain {
                 Integer.parseInt(argsMap.getOrDefault("epsilonNbStep", "15000")),     //num step for eps greedy anneal
                 Boolean.parseBoolean(argsMap.getOrDefault("doubleDQN", "false"))      //double DQN
         );
-
+        System.out.println("qlConfig:" + qlConfiguration);
         SystemEnvironment mdp = new SystemEnvironment(topology, actionSet);
         FilteredMultiLayerNetwork nn = new NNBuilder().build(mdp.getObservationSpace().size(),
                 mdp.getActionSpace().getSize(),
@@ -63,7 +76,6 @@ public class DQNMain {
         nn.setListeners(new ScoreIterationListener(100));
         //nn.setListeners(new PerformanceListener(1, true, true));
         System.out.println(nn.summary());
-
 
 
         String dqnType = argsMap.getOrDefault("dqn", "standard");
