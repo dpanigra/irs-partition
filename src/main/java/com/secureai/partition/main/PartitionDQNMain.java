@@ -49,9 +49,10 @@ public class PartitionDQNMain {
         System.setProperty("org.bytedeco.javacpp.maxbytes", "0");
         BasicConfigurator.configure();
         TimeUtils.setupStartMillis();
+        System.out.println(TimeUtils.getStartMillis());
+        
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
-
         String topoloy_file = String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "3-containers"));
         String actionset_file = String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "3-containers"));
         Topology topology = YAML.parse(topoloy_file, Topology.class);

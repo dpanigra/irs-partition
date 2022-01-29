@@ -40,6 +40,7 @@ public class DQNMain {
         System.setProperty("org.bytedeco.javacpp.maxbytes", "0");
         BasicConfigurator.configure();
         TimeUtils.setupStartMillis();
+        System.out.println(TimeUtils.getStartMillis());
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
         
