@@ -61,7 +61,6 @@ public class PartitionDQNMain {
         System.out.println("actionset_file:"+actionset_file);
         
         SystemEnvironment systemModel = new SystemEnvironment(topology, actionSet);
-        System.out.println(systemModel.getSystemDefinition());
         List<PartitionSystemEnvironment> allPartitions = PartitionCreatorUtility.createPartitions(systemModel);
         for (PartitionSystemEnvironment partitionSystemModel: allPartitions){ //train on nn for each partition
             
