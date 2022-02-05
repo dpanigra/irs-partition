@@ -35,28 +35,63 @@ cd irs-partition/
 ls -ltrah
 cp pom.xml partition_pom.xml
 cp pom.xml system_pom.xml
+cp pom.xml partition_vi_pom.xml
+cp pom.xml system_vi_pom.xml
+
+sed ''/mainClass/d'' partition_pom.xml > partition_pom_1.xml
+sed 's/\/addClasspath>/\/addClasspath>\n<mainClass>com.secureai.partition.main.PartitionDQNMain<\/mainClass>/g' partition_pom_1.xml > partition_pom_2.xml
+grep mainClass partition_pom_2.xml
+
+sed ''/mainClass/d'' system_pom.xml > system_pom_1.xml
+sed 's/\/addClasspath>/\/addClasspath>\n<mainClass>com.secureai.DQNMain<\/mainClass>/g' system_pom_1.xml > system_pom_2.xml
+grep mainClass system_pom_2.xml 
+
+sed ''/mainClass/d'' partition_vi_pom.xml > partition_vi_pom_1.xml
+sed 's/\/addClasspath>/\/addClasspath>\n<mainClass>com.secureai.partition.main.PartitionVIMain<\/mainClass>/g' partition_vi_pom_1.xml > partition_vi_pom_2.xml
+grep mainClass partition_vi_pom_2.xml 
+
+sed ''/mainClass/d'' system_vi_pom.xml > system_vi_pom_1.xml
+sed 's/\/addClasspath>/\/addClasspath>\n<mainClass>com.secureai.VIMain<\/mainClass>/g' system_vi_pom_1.xml > system_vi_pom_2.xml
+grep mainClass system_vi_pom_2.xml 
 
 # Step 3 I
 # - remove previous maven builds
 # - ensure correct Java class is included in the META of jar
 # - create the jar file
 #   -- we will use this jar to execute the s/w
-rm -rf /users/<userid_remotebox>/irs/irs-partition/target/
-vi system_pom.xml
+rm -rf /users/<userid_remotebox>/irs/irs-partition/target/secureai.jar
 /usr/bin/mvn -f system_pom.xml package
+#"/Applications/NetBeans/Apache NetBeans 12.2.app/Contents/Resources/NetBeans/netbeans/java/maven/bin/mvn" "-Dexec.args=-classpath %classpath com.secureai.DQNMain" -Dexec.executable=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin/java -f partition_pom_2.xml package
+#"/Applications/NetBeans/Apache NetBeans 12.2.app/Contents/Resources/NetBeans/netbeans/java/maven/bin/mvn" "-Dexec.args=-classpath %classpath com.secureai.DQNMain" -Dexec.executable=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin/java -f system_pom_2.xml package
+#"/Applications/NetBeans/Apache NetBeans 12.2.app/Contents/Resources/NetBeans/netbeans/java/maven/bin/mvn" "-Dexec.args=-classpath %classpath com.secureai.DQNMain" -Dexec.executable=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin/java -f system_vi_pom_2.xml package
+#"/Applications/NetBeans/Apache NetBeans 12.2.app/Contents/Resources/NetBeans/netbeans/java/maven/bin/mvn" "-Dexec.args=-classpath %classpath com.secureai.DQNMain" -Dexec.executable=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin/java -f partition_vi_pom_2.xml package
 
 # Step 4 I
-# - specifiy a tag name for the run
+# - specify a tag name for the run
 # - run the jar file in bg
 #   -- specify jvm and the program (QLearning and the NN hyperparams) arguments
 setenv MYRUN "sysytem_run20"
 echo $MYRUN
-/usr/bin/java -Xms102400m -Xmx102400m -XX:MaxMetaspaceSize=40960m \
+# for partition
+#/usr/bin/java \
+#    -jar target/secureai.jar \
+#    --hiddenSize 8\
+#    --maxEpochStep 100\
+#    --maxStep 20000 \
+#    --partition redis-service \
+#    &> ../experiments/$MYRUN.txt &
+
+# for system
+#/usr/bin/java \
+#    -jar target/secureai.jar \
+#    --hiddenSize 16\
+#    --maxEpochStep 500\
+#    --maxStep 75000 \
+#    &> ../experiments/$MYRUN.txt &
+# for vvi
+/usr/bin/java \
     -jar target/secureai.jar \
-    --hiddenSize 16\
-    --maxEpochStep 5000\
-    --maxStep 300000 \
-    > & ../experiments/$MYRUN.txt &
+    &> ../experiments/$MYRUN.txt &
 
 # Step 5 I
 # - check the logs
