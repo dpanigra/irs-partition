@@ -1,5 +1,7 @@
 id: action-set-2-containers
+
 actions:
+
   start:
     execution-time: 300
     execution-cost: 100
@@ -7,33 +9,35 @@ actions:
     post-condition: state[active] = rand(1)
     components:
       - frontend-service
-      - cart-service
       - redis-service
+
   restart:
     execution-time: 500
     execution-cost: 300
     pre-condition: state[active] == true && state[corrupted] == true && state[restarted] == false
-    post-condition: state[corrupted] = rand(1), state[restarted] = rand(1)
+    post-condition: state[corrupted] = rand(0.75), state[restarted] = rand(1)
     components:
       - frontend-service
-      - cart-service
       - redis-service
+
   heal:
     execution-time: 1000
     execution-cost: 500
     pre-condition: state[active] == true && state[corrupted] == true OR state[shellCorrupted] == true
-    post-condition: state[corrupted] = rand(1), state[shellCorrupted] = rand(1)
+    post-condition: state[corrupted] = rand(0), state[shellCorrupted] = rand(0)
     components:
       - frontend-service
-      - cart-service
       - redis-service
+
+
   healRedisSecure:
     execution-time: 1000
     execution-cost: 500
     pre-condition: state[active] == true && state[cartCorrupted] == true && state[integrityVulnerability] == false
-    post-condition: state[cartCorrupted] = rand(1)
+    post-condition: state[cartCorrupted] = rand(0)
     components:
       - redis-service
+
   healRedisUnsecure:
     execution-time: 1000
     execution-cost: 500
@@ -41,17 +45,27 @@ actions:
     post-condition: state[cartCorrupted] = rand(1)
     components:
       - redis-service
+
+  enablePassword:
+    execution-time: 1000
+    execution-cost: 1000
+    pre-condition: state[active] == true && state[passwordRequired] == false && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
+    post-condition: state[passwordRequired] = rand(1), state[confidentialityVulnerability] = rand(0), state[integrityVulnerability] = rand(0)
+    components:
+      - redis-service
+
   disableDangerousCmd:
     execution-time: 50
     execution-cost: 500
     pre-condition: state[active] == true && state[dangerousCmdEnabled] == true && state[integrityVulnerability] == true
-    post-condition: state[dangerousCmdEnabled] = rand(1), state[integrityVulnerability] = rand(1)
+    post-condition: state[dangerousCmdEnabled] = rand(0), state[integrityVulnerability] = rand(0.85)
     components:
       - redis-service
+
   restrictAccess:
     execution-time: 50
     execution-cost: 300
     pre-condition: state[active] == true && state[accessRestricted] == false && state[confidentialityVulnerability] == true OR state[integrityVulnerability] == true
-    post-condition: state[accessRestricted] = rand(1), state[confidentialityVulnerability] = rand(1) , state[integrityVulnerability] = rand(1)
+    post-condition: state[accessRestricted] = rand(1), state[confidentialityVulnerability] = rand(0.7) , state[integrityVulnerability] = rand(0.7)
     components:
       - redis-service

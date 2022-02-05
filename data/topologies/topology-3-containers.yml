@@ -12,14 +12,6 @@ tasks:
       - restarted
       - corrupted
       - shellCorrupted
-  cart-service:
-    replication: 1
-    state:
-      - start
-      - active
-      - restarted
-      - corrupted
-      - shellCorrupted
   redis-service:
     replication: 1
     state:
@@ -33,7 +25,8 @@ tasks:
       - integrityVulnerability
       - passwordRequired
       - dangerousCmdEnabled
-      - accessRestricted     
+      - accessRestricted
+
 connections:
   # First tier
   frontend-service-to-cart-service:

@@ -28,7 +28,7 @@ sudo apt install maven -y
 ls -ltrah
 mkdir irs
 cd irs/
-git clone https://github.com/<userid_remotebox>gra/irs-partition.git
+git clone https://github.com/dpanigra/irs-partition.git
 mkdir experiments
 ls -ltrah
 cd irs-partition/
