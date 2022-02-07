@@ -57,7 +57,7 @@ public class PartitionVIMain {
 
             vi.solve();
 
-            double result = vi.evaluate(5);
+            double result = vi.evaluate(Integer.parseInt(argsMap.getOrDefault("evalSteps", "5")));
             ValueWriter.writeValue("output/value_iteration.txt", new Timestamped<>(result));
         }
     }
