@@ -71,7 +71,7 @@ public class DQNMain {
         FilteredMultiLayerNetwork nn = new NNBuilder().build(mdp.getObservationSpace().size(),
                 mdp.getActionSpace().getSize(),
                 Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "64")),
+                Integer.parseInt(argsMap.getOrDefault("hiddenSize", "16")),
                 Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));             
         //nn.setMultiLayerNetworkPredictionFilter(input -> mdp.getActionSpace().actionsMask(input));
         nn.setListeners(new ScoreIterationListener(100));

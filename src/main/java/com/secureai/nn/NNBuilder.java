@@ -19,7 +19,7 @@ public class NNBuilder {
 
     public FilteredMultiLayerNetwork build(int inputs, int outputs, int size, int hidden_size, double learningRate) {
         NeuralNetConfiguration.ListBuilder builder = new NeuralNetConfiguration.Builder()
-                .seed(12345)
+                .seed(42)
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .updater(new Adam(learningRate))
                 .weightInit(WeightInit.XAVIER)

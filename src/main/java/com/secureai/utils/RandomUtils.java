@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class RandomUtils {
     @Getter
-    public static Random random = new Random();
+    public static Random random = new Random(42);
 
     public static <T> T getRandom(T[] array) {
         int rnd = random.nextInt(array.length);

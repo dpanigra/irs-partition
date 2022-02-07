@@ -90,9 +90,9 @@ public class PartitionDQNMain {
             FilteredMultiLayerNetwork nn = new NNBuilder().build(partitionSystemModel.getObservationSpace().size(),
                     partitionSystemModel.getActionSpace().getSize(),
                     Integer.parseInt(argsMap.getOrDefault("layers", "3")),
-                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "16")),
+                    Integer.parseInt(argsMap.getOrDefault("hiddenSize", "8")),
                     Double.parseDouble(argsMap.getOrDefault("learningRate", "0.0001")));             
-            nn.setListeners(new ScoreIterationListener(100));
+            nn.setListeners(new ScoreIterationListener(10));
             System.out.println(nn.summary());
 
             System.out.println("Training for " + partitionSystemModel.getSystemDefinition().getTopology().getId());
