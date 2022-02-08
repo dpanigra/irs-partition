@@ -50,6 +50,9 @@ public class DQNMain {
         ActionSet actionSet = YAML.parse(actionset_file, ActionSet.class);
         System.out.println("topoloy_file:"+topoloy_file);
         System.out.println("actionset_file:"+actionset_file);
+        Config.COST_WEIGHT = Double.parseDouble(argsMap.getOrDefault("costWeight", Config.DEFAULT_COST_WEIGHT));
+        Config.TIME_WEIGHT = Double.parseDouble(argsMap.getOrDefault("timeWeight", Config.DEFAULT_TIME_WEIGHT));
+        System.out.println("costWeight:" + Config.COST_WEIGHT + ",timeWeight:" + Config.TIME_WEIGHT);
 
         QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
                 Config.SEED,                //Random seed
