@@ -21,7 +21,7 @@ public class VIMain {
         System.out.println(TimeUtils.getStartMillis());
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
-
+        Config.SEED = Integer.parseInt(argsMap.getOrDefault("seed", Config.DEFAULT_SEED));
         String topoloy_file = String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "3-containers"));
         String actionset_file = String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "3-containers"));
         Topology topology = YAML.parse(topoloy_file, Topology.class);
@@ -32,7 +32,7 @@ public class VIMain {
         SystemEnvironment mdp = new SystemEnvironment(topology, actionSet);
 
         ValueIteration.VIConfiguration viConfiguration = new ValueIteration.VIConfiguration(
-                Integer.parseInt(argsMap.getOrDefault("seed", "42")),      //Random seed
+                Config.SEED,      //Random seed
                 Integer.parseInt(argsMap.getOrDefault("iterations", "5")),  //iterations
                 Double.parseDouble(argsMap.getOrDefault("gamma", "0.75")),  //gamma
                 Double.parseDouble(argsMap.getOrDefault("epsilon", "1e-8")) //epsilon

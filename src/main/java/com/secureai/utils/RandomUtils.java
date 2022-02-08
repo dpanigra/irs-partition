@@ -1,12 +1,13 @@
 package com.secureai.utils;
 
+import com.secureai.Config;
 import lombok.Getter;
 
 import java.util.Random;
 
 public class RandomUtils {
     @Getter
-    public static Random random = new Random(42);
+    public static Random random = new Random(Config.SEED);
 
     public static <T> T getRandom(T[] array) {
         int rnd = random.nextInt(array.length);

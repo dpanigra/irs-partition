@@ -25,6 +25,7 @@ import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscret
 import org.deeplearning4j.rl4j.network.dqn.DQN;
 import org.deeplearning4j.rl4j.util.DataManager;
 import org.deeplearning4j.rl4j.util.DataManagerTrainingListener;
+import com.secureai.Config;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,6 +54,7 @@ public class PartitionDQNMain {
         
 
         Map<String, String> argsMap = ArgsUtils.toMap(args);
+        Config.SEED = Integer.parseInt(argsMap.getOrDefault("seed", Config.DEFAULT_SEED));
         String topoloy_file = String.format("data/topologies/topology-%s.yml", argsMap.getOrDefault("topology", "3-containers"));
         String actionset_file = String.format("data/action-sets/action-set-%s.yml", argsMap.getOrDefault("actionSet", "3-containers"));
         Topology topology = YAML.parse(topoloy_file, Topology.class);
@@ -72,7 +74,7 @@ public class PartitionDQNMain {
             }
             
             QLearning.QLConfiguration qlConfiguration = new QLearning.QLConfiguration(
-                    Integer.parseInt(argsMap.getOrDefault("seed", "42")),                //Random seed
+                    Config.SEED,                //Random seed
                     Integer.parseInt(argsMap.getOrDefault("maxEpochStep", "500")),      //Max step By epoch                    
                     Integer.parseInt(argsMap.getOrDefault("maxStep", "15000")),          //Max step
                     Integer.parseInt(argsMap.getOrDefault("expRepMaxSize", "5000")),      //Max size of experience replay
