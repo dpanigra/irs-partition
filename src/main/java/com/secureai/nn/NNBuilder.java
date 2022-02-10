@@ -1,5 +1,6 @@
 package com.secureai.nn;
 
+import com.secureai.Config;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
@@ -19,7 +20,7 @@ public class NNBuilder {
 
     public FilteredMultiLayerNetwork build(int inputs, int outputs, int size, int hidden_size, double learningRate) {
         NeuralNetConfiguration.ListBuilder builder = new NeuralNetConfiguration.Builder()
-                .seed(42)
+                .seed(Config.SEED)
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .updater(new Adam(learningRate))
                 .weightInit(WeightInit.XAVIER)
