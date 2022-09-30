@@ -17,6 +17,10 @@ limitations under the License.
 ```
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
+## Journal
+Please refer to the journal using the current repo:
+[irs-partition: An Intrusion Response System utilizing Deep Q-Networks and system partitions.](https://www.sciencedirect.com/science/article/pii/S2352711022000796)
+
 ## Parent repo
 The repo is forked from ['SecureAI: Deep Reinforcement Learning for Self-Protection in Non-Stationary Cloud Architectures.'](https://github.com/MatteoLucantonio/secureai-java)
 
@@ -63,3 +67,7 @@ The below diagram shows how the monolothic System's action set is broken down in
 1. Clone the repo
 2. Build, package, and run using Maven
 3. pom.xml executes com.secureai.partition.main.PartitionDQNMain.main()
+
+## Experiment
+Please refer to the journal for details. Below is the result of the experiment.
+![Partition system - expermentresult](uml/experimental-result.png?raw=true "Partition system - expermentresult")
