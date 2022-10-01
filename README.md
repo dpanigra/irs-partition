@@ -18,7 +18,7 @@ limitations under the License.
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 ## Journal
-Please refer to the journal using the current repo:
+Please refer to the article in the journal SoftwareX (Volume 19, July 2022, 101120) using the current repo:
 [irs-partition: An Intrusion Response System utilizing Deep Q-Networks and system partitions.](https://www.sciencedirect.com/science/article/pii/S2352711022000796)
 
 ## Parent repo
@@ -68,6 +68,31 @@ The below diagram shows how the monolothic System's action set is broken down in
 2. Build, package, and run using Maven
 3. pom.xml executes com.secureai.partition.main.PartitionDQNMain.main()
 
-## Experiment
-Please refer to the journal for details. Below is the result of the experiment.
+## Experiment Setup and Results
+### Environment
+[c220g2 from CloudLab](https://docs.cloudlab.
+us/hardware.html).
+
+Type|Description
+---|---
+c240g2|4 nodes (Haswell, 20 core, 8 disks)
+CPU|Two Intel E5-2660 v3 10-core CPUs at 2.
+60 GHz (Haswell EP)
+RAM|160GB ECC Memory (10x 16 GB DDR4 2133 
+MHz dual rank RDIMMs)
+Disk|Two Intel DC S3500 480 GB 6G SATA SSDs
+Disk|Two 1TB HDDs
+Disk|Four 3TB HDDs
+NIC|Dual-port Intel X520 10Gb NIC (PCIe v3.
+0, 8 lanes
+NIC|Onboard Intel i350 1Gb
+
+We used the following JVM parameters: 
+-Xms102400 m -Xmx102400 m 
+-XX:MaxMetaspaceSize=40960m. 
+
+### Experiment Results
+We initialize the system state to simulate an exploit based on the common vulnerability [CVE-2019-5736](https://nvd.nist.gov/vuln/detail/CVE-2019-5736), based on the lack of authentication of Redis server. We measure the effectiveness of the proposed IRS prototype in terms of cumulative reward and convergence time, as typical in IRSs based on Reinforcement Learning. We carried out experiments to gather the cumulative rewards in training the DQNs for both, the entire system and the *front-end partition* only. As depicted in Fig. 6, the training time to converge to a near-optimal cumulative reward of the *front-end partition*, **173** sec, is smaller than the convergence time for the case in which the entire system is considered, **220 sec**. We calculated the optimal cumulative reward using our implementation of the _Value Iteration_ algorithm (classes _VIMain_ and _PartitionVIMain_). Fig. 6(a) and 6(b) respectively show the cumulative reward obtained according to the time spent on training for both, the single *front-end partition* and the *system*. We do not provide a detailed analysis of the time overhead introduced by the IRS, because it is negligible with respect to the execution time of the response actions. Indeed, once the model has been trained, the IRS overhead consists in a single forward pass on the neural network, which can be accomplished in the order of milliseconds, while the execution time of the response actions is in the order of seconds or minutes.
+
+Please refer to the article for details. Below is the result of the experiment.
 ![Partition system - expermentresult](uml/experimental-result.png?raw=true "Partition system - expermentresult")
